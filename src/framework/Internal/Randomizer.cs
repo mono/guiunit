@@ -40,7 +40,7 @@ namespace NUnit.Framework.Internal
     public class Randomizer : Random
     {
         #region Static Members
-        private static Random seedGenerator = new Random();
+        private static Random seedGenerator;
 
 #if CLR_2_0 || CLR_4_0
         private static Dictionary<MemberInfo, Randomizer> randomizers = new Dictionary<MemberInfo, Randomizer>();
@@ -53,7 +53,12 @@ namespace NUnit.Framework.Internal
         /// </summary>
         public static int RandomSeed
         {
-            get { return seedGenerator.Next(); }
+            get
+            {
+                if (seedGenerator == null)
+                    seedGenerator = new Random(TestContext.AssemblySeed);
+                return seedGenerator.Next();
+            }
         }
 
         /// <summary>

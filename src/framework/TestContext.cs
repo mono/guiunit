@@ -48,6 +48,7 @@ namespace NUnit.Framework
         public TestContext(TestExecutionContext ec)
         {
             this.ec = ec;
+            AssemblySeed = new Random().Next();
         }
 
         #endregion
@@ -92,6 +93,8 @@ namespace NUnit.Framework
                 return result;
             }
         }
+
+        internal static int AssemblySeed { set; get; }
 
 #if !NETCF
         /// <summary>
