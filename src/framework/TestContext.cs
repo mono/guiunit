@@ -48,6 +48,13 @@ namespace NUnit.Framework
         public TestContext(TestExecutionContext ec)
         {
             this.ec = ec;
+        }
+
+        /// <summary>
+        /// Initialize Test Context Properties
+        /// </summary>
+        static TestContext()
+        {
             AssemblySeed = new Random().Next();
         }
 
@@ -94,6 +101,10 @@ namespace NUnit.Framework
             }
         }
 
+        /// <summary>
+        /// Sets and Gets the Assembly Seed used to generate Seeds
+        /// for Random Generators in Tests
+        /// </summary>
         internal static int AssemblySeed { set; get; }
 
 #if !NETCF

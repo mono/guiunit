@@ -394,6 +394,10 @@ namespace NUnitLite.Runner
                 sb.Append("  -help,-h        Displays this help" + NL + NL);
                 sb.Append("  -noheader,-noh  Suppresses display of the initial message" + NL + NL);
                 sb.Append("  -labels         Displays the name of each test when it starts" + NL + NL);
+                sb.Append("  -seed:SEED      If provided, this option allows you to set the seed for the" + NL + NL);
+                sb.Append("                  random generator in the test context." + NL + NL);
+                sb.Append("  -include:CAT    List of categories to include" + NL + NL);
+                sb.Append("  -exclude:CAT    List of categories to exclude" + NL + NL);
                 sb.Append("  -wait           Waits for a key press before exiting" + NL + NL);
 
                 sb.Append("Notes:" + NL);
