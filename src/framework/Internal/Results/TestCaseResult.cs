@@ -49,5 +49,12 @@ namespace NUnit.Framework.Internal
         {
             get { return ResultState.Status == TestStatus.Inconclusive ? 1 : 0; }
         }
+
+        public override XmlNode AddToXml(XmlNode parentNode, bool recursive)
+        {
+            XmlNode thisNode = this.test.AddToXml(parentNode, false);
+            thisNode.AddAttribute("seed", this.test.Seed.ToString());
+            return thisNode;
+        }
     }
 }
