@@ -167,7 +167,7 @@ namespace NUnit.Framework.Internal
         #endregion
 
         #region Enums
-#if CLR_2_0
+#if CLR_2_0 || CLR_4_0
         /// <summary>
         /// Return a random enum value representation of the specified Type
         /// </summary>
