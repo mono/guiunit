@@ -283,7 +283,15 @@ namespace NUnit.Framework.Internal
                 thisNode.AddAttribute("failed", FailCount.ToString());
                 thisNode.AddAttribute("inconclusive", InconclusiveCount.ToString());
                 thisNode.AddAttribute("skipped", SkipCount.ToString());
+                if (this.test.Parent == null)
+                {
+                    thisNode.AddAttribute("assemblySeed", TestContext.AssemblySeed.ToString());
+                }                
             }
+            else
+            {
+                thisNode.AddAttribute("seed", this.test.Seed.ToString());
+            }            
 
             thisNode.AddAttribute("asserts", this.AssertCount.ToString());
 
