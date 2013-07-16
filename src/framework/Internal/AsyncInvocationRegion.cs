@@ -9,12 +9,12 @@ namespace NUnit.Framework.Internal
     internal abstract class AsyncInvocationRegion : IDisposable
     {
         private static readonly Type AsyncStateMachineAttribute = Type.GetType("System.Runtime.CompilerServices.AsyncStateMachineAttribute");
-        private static readonly MethodInfo PreserveStackTraceMethod = typeof(Exception).GetMethod("InternalPreserveStackTrace", BindingFlags.Instance | BindingFlags.NonPublic);
-        private static readonly Action<Exception> PreserveStackTrace;
+        //private static readonly MethodInfo PreserveStackTraceMethod = typeof(Exception).GetMethod("InternalPreserveStackTrace", BindingFlags.Instance | BindingFlags.NonPublic);
+        //private static readonly Action<Exception> PreserveStackTrace;
 
         static AsyncInvocationRegion()
         {
-            PreserveStackTrace = (Action<Exception>)Delegate.CreateDelegate(typeof(Action<Exception>), PreserveStackTraceMethod);
+            //PreserveStackTrace = (Action<Exception>)Delegate.CreateDelegate(typeof(Action<Exception>), PreserveStackTraceMethod);
         }
 
         private AsyncInvocationRegion()
@@ -85,7 +85,7 @@ at wrapping a non-async method invocation in an async region was done");
                 }
                 catch (Exception e)
                 {
-                    PreserveStackTrace(e);
+                    //PreserveStackTrace(e);
                     throw;
                 }
             }
@@ -109,7 +109,7 @@ at wrapping a non-async method invocation in an async region was done");
                 {
                     IList<Exception> innerExceptions = GetAllExceptions(e.InnerException);
 
-                    PreserveStackTrace(innerExceptions[0]);
+                    //PreserveStackTrace(innerExceptions[0]);
                     throw innerExceptions[0];
                 }
 

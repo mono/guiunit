@@ -138,7 +138,7 @@ namespace NUnitLite.Runner
         {
             xmlWriter.WriteStartElement("environment");
             AssemblyName assemblyName = AssemblyHelper.GetAssemblyName(Assembly.GetExecutingAssembly());
-            xmlWriter.WriteAttributeString("nunit-version",
+            xmlWriter.WriteAttributeString("macunit-version",
                                            assemblyName.Version.ToString());
             xmlWriter.WriteAttributeString("clr-version",
                                            Environment.Version.ToString());
@@ -206,12 +206,12 @@ namespace NUnitLite.Runner
                 xmlWriter.WriteAttributeString("type", suite.TestType);
                 xmlWriter.WriteAttributeString("name", suite.TestType == "Assembly"
                     ? result.Test.FullName
-                    : result.Test.Name);
+                    : result.Test.FullName);
             }
             else
             {
                 xmlWriter.WriteStartElement("test-case");
-                xmlWriter.WriteAttributeString("name", result.Name);
+                xmlWriter.WriteAttributeString("name", result.FullName);
             }
 
             if (test.Properties.ContainsKey(PropertyNames.Description))

@@ -214,7 +214,11 @@ namespace NUnit.Framework.Internal
                     Console.WriteLine("Trying to call {0} without an instance", method.Name);
 				try
 				{
-					return method.Invoke( fixture, args );
+					Environment.CurrentDirectory = System.IO.Path.GetDirectoryName (method.DeclaringType.Assembly.Location);
+					var result = MacUnit.MainLoopHelper.ExecuteOnMainThread (() => method.Invoke( fixture, args ));
+					if (result is System.Threading.Tasks.Task)
+						((System.Threading.Tasks.Task)result).Wait ();
+					return result;
 				}
 				catch(Exception e)
 				{

@@ -294,6 +294,7 @@ namespace NUnit.Framework.Builders
                      method.GetParameters().Length > 0 ||
                      !method.ReturnType.Equals(typeof(void)))
                 {
+				if (!MethodHelper.IsAsyncMethod (method))
                     SetNotRunnable(fixture, string.Format("Invalid signature for Setup or TearDown method: {0}", method.Name));
                     return false;
                 }

@@ -6,10 +6,10 @@
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{D12F0F7B-8DE3-43EC-BA49-41052D065A9B}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NUnitLite</RootNamespace>
-    <AssemblyName>nunitlite</AssemblyName>
+    <AssemblyName>GuiUnit.dll</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -33,12 +33,13 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile />
     <IntermediateOutputPath>obj\$(Configuration)\net-4.5\</IntermediateOutputPath>
+    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\bin\Debug\net-4.5\</OutputPath>
+    <OutputPath>..\..\bin</OutputPath>
     <DefineConstants>TRACE;DEBUG;NET_4_5, CLR_4_0,NUNITLITE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -49,7 +50,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\bin\Release\net-4.5\</OutputPath>
+    <OutputPath>..\..\bin</OutputPath>
     <DefineConstants>TRACE;NET_4_5, CLR_4_0,NUNITLITE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -58,14 +59,12 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
     <AssemblyOriginatorKeyFile>nunit.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\ExpectedExceptionData.cs" />
@@ -338,6 +337,8 @@
     <Compile Include="TestCaseData.cs" />
     <Compile Include="TestContext.cs" />
     <Compile Include="Throws.cs" />
+    <Compile Include="MacTestListener.cs" />
+    <Compile Include="MainLoopCommand.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
