@@ -63,7 +63,7 @@ namespace MacUnit
 				}
 			}
 			new MacTestRunner ().Execute (args);
-			return 1;
+			return 0;
 		}
 
 		private CommandLineOptions commandLineOptions;
