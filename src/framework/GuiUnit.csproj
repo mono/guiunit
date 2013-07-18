@@ -337,11 +337,16 @@
     <Compile Include="TestCaseData.cs" />
     <Compile Include="TestContext.cs" />
     <Compile Include="Throws.cs" />
-    <Compile Include="MacTestListener.cs" />
-    <Compile Include="MainLoopCommand.cs" />
+    <Compile Include="GuiUnit\TestRunner.cs" />
+    <Compile Include="GuiUnit\MainLoopCommand.cs" />
+    <Compile Include="GuiUnit\IMainLoopIntegration.cs" />
+    <Compile Include="GuiUnit\XwtMainLoopIntegration.cs" />
+    <Compile Include="GuiUnit\InvokerHelper.cs" />
+    <Compile Include="GuiUnit\MonoMacMainLoopIntegration.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+    <Folder Include="GuiUnit\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

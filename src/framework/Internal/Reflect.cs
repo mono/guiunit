@@ -215,10 +215,17 @@ namespace NUnit.Framework.Internal
 				try
 				{
 					Environment.CurrentDirectory = System.IO.Path.GetDirectoryName (method.DeclaringType.Assembly.Location);
-					var result = MacUnit.MainLoopHelper.ExecuteOnMainThread (() => method.Invoke( fixture, args ));
-					if (result is System.Threading.Tasks.Task)
-						((System.Threading.Tasks.Task)result).Wait ();
-					return result;
+					var invokeHelper = new GuiUnit.InvokerHelper {
+						Context = TestExecutionContext.CurrentContext,
+						Func = () => method.Invoke( fixture, args )
+					};
+
+					GuiUnit.TestRunner.MainLoop.InvokeOnMainLoop (invokeHelper);
+					invokeHelper.Waiter.WaitOne ();
+
+					if (invokeHelper.Result is System.Threading.Tasks.Task)
+						((System.Threading.Tasks.Task)invokeHelper.Result).Wait ();
+					return invokeHelper.Result;
 				}
 				catch(Exception e)
 				{

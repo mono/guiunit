@@ -32,26 +32,21 @@ using NUnit.Framework.Internal.Filters;
 using System.Diagnostics;
 using NUnitLite.Runner;
 
-namespace MacUnit
+namespace GuiUnit
 {
-	/// <summary>
-	/// TextUI is a general purpose class that runs tests and
-	/// outputs to a TextWriter.
-	/// 
-	/// Call it from your Main like this:
-	///   new TextUI(textWriter).Execute(args);
-	///     OR
-	///   new TextUI().Execute(args);
-	/// The provided TextWriter is used by default, unless the
-	/// arguments to Execute override it using -out. The second
-	/// form uses the Console, provided it exists on the platform.
-	/// 
-	/// NOTE: When running on a platform without a Console, such
-	/// as Windows Phone, the results will simply not appear if
-	/// you fail to specify a file in the call itself or as an option.
-	/// </summary>
-	public class MacTestRunner : ITestListener
+	public class TestRunner : ITestListener
 	{
+		static IMainLoopIntegration mainLoop;
+		public static IMainLoopIntegration MainLoop {
+			get {
+				try { mainLoop = mainLoop ?? new XwtMainLoopIntegration (); } catch { }
+				try { mainLoop = mainLoop ?? new MonoMacMainLoopIntegration (); } catch { }
+				return mainLoop;
+			} set {
+				mainLoop = value;
+			}
+		}
+
 		public static int Main (string[] args)
 		{
 			Environment.ExitCode = 1;
@@ -62,7 +57,7 @@ namespace MacUnit
 					args [i] = args [i].Replace ("-run", "-test");
 				}
 			}
-			new MacTestRunner ().Execute (args);
+			new TestRunner ().Execute (args);
 			return 0;
 		}
 
@@ -81,20 +76,20 @@ namespace MacUnit
 		/// <summary>
 		/// Initializes a new instance of the <see cref="TextUI"/> class.
 		/// </summary>
-		public MacTestRunner() : this(ConsoleWriter.Out, TestListener.NULL) { }
+		public TestRunner() : this(ConsoleWriter.Out, TestListener.NULL) { }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="TextUI"/> class.
 		/// </summary>
 		/// <param name="writer">The TextWriter to use.</param>
-		public MacTestRunner(TextWriter writer) : this(writer, TestListener.NULL) { }
+		public TestRunner(TextWriter writer) : this(writer, TestListener.NULL) { }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="TextUI"/> class.
 		/// </summary>
 		/// <param name="writer">The TextWriter to use.</param>
 		/// <param name="listener">The Test listener to use.</param>
-		public MacTestRunner(TextWriter writer, ITestListener listener)
+		public TestRunner(TextWriter writer, ITestListener listener)
 		{
 			// Set the default writer - may be overridden by the args specified
 			this.writer = writer;
@@ -112,68 +107,6 @@ namespace MacUnit
 		/// </summary>
 		/// <param name="args">An array of arguments</param>
 		public void Execute(string[] args)
-		{
-			ExecuteCore (args);
-		}
-
-		bool ExecuteOnXwt (Action action)
-		{
-			try {
-				// Firstly init Xwt
-				var application = Type.GetType ("Xwt.Application, Xwt");
-				foreach (var impl in new [] { "Xwt.Gtk.dll", "Xwt.Mac.dll", "Xwt.Wpf.dll"}) {
-					var xwtImpl = Path.Combine (Path.GetDirectoryName (application.Assembly.Location), impl);
-					if (File.Exists (xwtImpl))
-						Assembly.LoadFile (xwtImpl);
-				}
-
-				var initMethods = application.GetMethods (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
-				var initMethod = initMethods.First (m => m.Name == "Initialize" && m.GetParameters ().Length == 1 && m.GetParameters () [0].ParameterType == typeof(string));
-				initMethod.Invoke (null, new [] { "Xwt.GtkBackend.GtkEngine, Xwt.Gtk" });
-
-				System.Threading.ThreadPool.QueueUserWorkItem (d => {
-					action ();
-					MainLoopHelper.ExecuteOnMainThread (() => {
-						application.GetMethod ("Exit").Invoke (null, null);
-						return null;
-					});
-				});
-				
-				application.GetMethod ("Run").Invoke (null, null);
-				return true;
-			} catch {
-				return false;
-			}
-		}
-
-		bool ExecuteOnMonoMac (Action action)
-		{
-			try {
-				// Firstly init monomac
-				var nsapp = Type.GetType ("MonoMac.AppKit.NSApplication, MonoMac");
-				var initMethod = nsapp.GetMethod ("Init", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
-				initMethod.Invoke (null, null);
-
-				// Next get the shared application so we can invoke some methods on it
-				var prop = nsapp.GetProperty ("SharedApplication", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
-				var sharedApplication = prop.GetValue (null, null);
-
-				System.Threading.ThreadPool.QueueUserWorkItem (d => {
-					action ();
-					MainLoopHelper.ExecuteOnMainThread (() => {
-						nsapp.GetMethod ("Terminate").Invoke (sharedApplication, new [] { sharedApplication });
-						return null;
-					});
-				});
-
-				nsapp.GetMethod ("Run").Invoke (sharedApplication, null);
-				return true;
-			} catch {
-				return false;
-			}
-		}
-
-		void ExecuteCore(string[] args)
 		{
 			// NOTE: Execute must be directly called from the
 			// test assembly in order for the mechanism to work.
@@ -261,13 +194,13 @@ namespace MacUnit
 							else
 								filter = new AndFilter(filter, excludeFilter);
 						}
-						if (ExecuteOnXwt (() => RunTests (filter))) {
 
-						} else if (ExecuteOnMonoMac (() => RunTests (filter))) {
-
-						} else {
-							throw new Exception ("Unsupported Toolkit");
-						}
+						MainLoop.InitializeToolkit ();
+						System.Threading.ThreadPool.QueueUserWorkItem (d => {
+							RunTests (filter);
+							Shutdown ();
+						});
+						MainLoop.RunMainLoop ();
 					}
 				}
 				catch (FileNotFoundException ex)
@@ -294,6 +227,18 @@ namespace MacUnit
 					}
 				}
 			}
+		}
+
+		static void Shutdown ()
+		{
+			// Run the shutdown method on the main thread
+			var helper = new InvokerHelper {
+				Func = () => {
+					MainLoop.Shutdown ();
+					return null;
+				}
+			};
+			MainLoop.InvokeOnMainLoop (helper);
 		}
 
 		/// <summary>
