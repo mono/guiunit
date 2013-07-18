@@ -1,2 +1,3 @@
 bin
 src/framework/GuiUnit.userprefs
+src/framework/obj/*
