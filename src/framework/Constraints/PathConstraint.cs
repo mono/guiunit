@@ -118,7 +118,7 @@ namespace NUnit.Framework.Constraints
                 else break;
             }
 
-#if (CLR_2_0x || CLR_4_0) && !NETCF
+#if (CLR_2_0 || CLR_4_0) && !NETCF
             string[] parts = path.Split(DirectorySeparatorChars, StringSplitOptions.RemoveEmptyEntries);
 #else
             string[] parts = path.Split(DirectorySeparatorChars);
