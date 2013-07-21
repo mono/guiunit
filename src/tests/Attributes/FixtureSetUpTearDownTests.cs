@@ -151,7 +151,7 @@ namespace NUnit.Framework.Attributes
 			Assert.AreEqual("System.Exception : This was thrown from fixture setup", result.Message, "TestSuite Message");
 			Assert.IsNotNull(result.StackTrace, "TestSuite StackTrace should not be null");
 
-            Assert.AreEqual(0, result.Children.Count, "Result should have no children");
+            Assert.AreEqual(1, result.Children.Count, "Result should have one child");
             Assert.AreEqual(1, result.FailCount, "Failure count");
 		}
 
@@ -185,7 +185,7 @@ namespace NUnit.Framework.Attributes
 			Assert.AreEqual("TestFixtureSetUp called Ignore", result.Message);
 			Assert.IsNotNull(result.StackTrace, "StackTrace should not be null");
 
-            Assert.AreEqual(0, result.Children.Count);
+            Assert.AreEqual(1, result.Children.Count);
             Assert.AreEqual(1, result.SkipCount);
 		}
 
@@ -214,7 +214,7 @@ namespace NUnit.Framework.Attributes
 			Assert.AreEqual("System.Exception : This was thrown in constructor", result.Message, "TestSuite Message");
 			Assert.IsNotNull(result.StackTrace, "TestSuite StackTrace should not be null");
 
-            Assert.AreEqual(0, result.Children.Count, "Result should have no children");
+            Assert.AreEqual(1, result.Children.Count, "Result should have one child");
             Assert.AreEqual(1, result.FailCount, "Failure count");
 		}
 

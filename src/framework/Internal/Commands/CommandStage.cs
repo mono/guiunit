@@ -65,17 +65,6 @@ namespace NUnit.Framework.Internal.Commands
         /// </summary>
         AboveSetUpTearDown
 
-        ///// <summary>
-        ///// Create any thread needed for execution of the test 
-        ///// and destroy it afterwards
-        ///// </summary>
-        //CreateThread,
-
-        ///// <summary>
-        ///// Run the test repeatedly, returning a single result
-        ///// </summary>
-        //Repeat,
-
         // Note: The context is created here and destroyed
         // after the test has run.
 

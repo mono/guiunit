@@ -311,19 +311,12 @@ namespace NUnit.Framework.Internal
         /// <returns>A TestResult suitable for this type of test.</returns>
         public abstract TestResult MakeTestResult();
 
-        ///// <summary>
-        ///// Gets a count of test cases that would be run using
-        ///// the specified filter.
-        ///// </summary>
-        ///// <param name="filter"></param>
-        ///// <returns></returns>
-        //public virtual int CountTestCases(TestFilter filter)
-        //{
-        //    if (filter.Pass(this))
-        //        return 1;
-
-        //    return 0;
-        //}
+        /// <summary>
+        /// Creates a WorkItem for executing this test.
+        /// </summary>
+        /// <param name="childFilter">A filter to be used in selecting child tests</param>
+        /// <returns>A new WorkItem</returns>
+        public abstract WorkItem CreateWorkItem(ITestFilter childFilter);
 
         /// <summary>
         /// Modify a newly constructed test by applying any of NUnit's common
@@ -366,7 +359,7 @@ namespace NUnit.Framework.Internal
         /// Gets or sets a fixture object for running this test.
         /// Provided for use by LegacySuiteBuilder.
         /// </summary>
-        internal object Fixture
+        public object Fixture
         {
             get { return fixture; }
             set { fixture = value; }

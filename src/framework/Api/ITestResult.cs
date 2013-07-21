@@ -83,15 +83,6 @@ namespace NUnit.Framework.Api
         }
 
         /// <summary>
-        /// Gets the failure site, which indicates the point
-        /// in the processing of the test where it failed.
-        /// </summary>
-        FailureSite FailureSite
-        {
-            get;
-        }
-
-        /// <summary>
         /// Gets the number of asserts executed
         /// when running the test and all its children.
         /// </summary>

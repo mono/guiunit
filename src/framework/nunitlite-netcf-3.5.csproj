@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{5F6CB3DC-5CE5-4C6A-AB23-936DB3B35DCC}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -55,7 +55,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\ExpectedExceptionData.cs" />
-    <Compile Include="Api\FailureSite.cs" />
     <Compile Include="Api\IParameterDataSource.cs">
       <SubType>Code</SubType>
     </Compile>

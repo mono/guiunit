@@ -66,7 +66,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\ExpectedExceptionData.cs" />
-    <Compile Include="Api\FailureSite.cs" />
     <Compile Include="Attributes\TimeoutAttribute.cs" />
     <Compile Include="Constraints\DelayedConstraint.cs" />
     <Compile Include="Constraints\FailurePoint.cs" />
@@ -74,13 +73,9 @@
     <Compile Include="Constraints\Operators\NoneOperator.cs" />
     <Compile Include="Constraints\Operators\SomeOperator.cs" />
     <Compile Include="Constraints\SubPathConstraint.cs" />
-    <Compile Include="Internal\Commands\OneTimeTearDownCommand.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Internal\Commands\OneTimeSetUpCommand.cs" />
+    <Compile Include="Internal\Commands\OneTimeTearDownCommand.cs" />
     <Compile Include="Internal\Commands\ApplyChangesToContextCommand.cs" />
-    <Compile Include="Internal\Commands\OneTimeSetUpCommand.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Internal\Commands\TheoryResultCommand.cs" />
     <Compile Include="Internal\Filters\SimpleCategoryExpression.cs" />
     <Compile Include="Internal\IApplyToContext.cs" />

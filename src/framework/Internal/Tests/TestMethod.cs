@@ -209,8 +209,11 @@ namespace NUnit.Framework.Internal
         /// Creates a test command for use in running this test. 
         /// </summary>
         /// <returns></returns>
-        public virtual TestCommand GetTestCommand()
+        public virtual TestCommand MakeTestCommand()
         {
+            if (RunState != RunState.Runnable && RunState != RunState.Explicit)
+                return new SkipCommand(this);
+
             TestCommand command = new TestMethodCommand(this);
 
             command = ApplyDecoratorsToCommand(command);
@@ -220,6 +223,17 @@ namespace NUnit.Framework.Internal
                 command = new ApplyChangesToContextCommand(command, changes);
 
             return command;
+        }
+
+        /// <summary>
+        /// Creates a WorkItem for executing this test.
+        /// </summary>
+        /// <param name="childFilter">A filter to be used in selecting child tests</param>
+        /// <returns>A new WorkItem</returns>
+        public override WorkItem CreateWorkItem(ITestFilter childFilter)
+        {
+            // For simple test cases, we ignore the filter
+            return new SimpleWorkItem(this);
         }
 
         #endregion

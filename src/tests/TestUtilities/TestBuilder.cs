@@ -85,8 +85,8 @@ namespace NUnit.TestUtilities
             TestExecutionContext context = new TestExecutionContext();
             context.TestObject = null;
 
-            CompositeWorkItem work = new CompositeWorkItem(suite, context, TestFilter.Empty);
-            return ExecuteAndWaitForResult(work);
+            CompositeWorkItem work = new CompositeWorkItem(suite, TestFilter.Empty);
+            return ExecuteAndWaitForResult(work, context);
         }
 
         public static TestResult RunTestFixture(object fixture)
@@ -96,8 +96,8 @@ namespace NUnit.TestUtilities
             TestExecutionContext context = new TestExecutionContext();
             context.TestObject = fixture;
 
-            WorkItem work = WorkItem.CreateWorkItem(suite, context, TestFilter.Empty);
-            return ExecuteAndWaitForResult(work);
+            WorkItem work = WorkItem.CreateWorkItem(suite, TestFilter.Empty);
+            return ExecuteAndWaitForResult(work, context);
         }
 
         public static ITestResult RunTestCase(Type type, string methodName)
@@ -138,8 +138,8 @@ namespace NUnit.TestUtilities
             TestExecutionContext context = new TestExecutionContext();
             context.TestObject = testObject;
 
-            WorkItem work = WorkItem.CreateWorkItem(test, context, TestFilter.Empty);
-            work.Execute();
+            WorkItem work = WorkItem.CreateWorkItem(test, TestFilter.Empty);
+            work.Execute(context);
 
             return work;
         }
@@ -149,13 +149,13 @@ namespace NUnit.TestUtilities
             TestExecutionContext context = new TestExecutionContext();
             context.TestObject = testObject;
 
-            WorkItem work = WorkItem.CreateWorkItem(test, context, TestFilter.Empty);
-            return ExecuteAndWaitForResult(work);
+            WorkItem work = WorkItem.CreateWorkItem(test, TestFilter.Empty);
+            return ExecuteAndWaitForResult(work, context);
         }
 
-        private static TestResult ExecuteAndWaitForResult(WorkItem work)
+        private static TestResult ExecuteAndWaitForResult(WorkItem work, TestExecutionContext context)
         {
-            work.Execute();
+            work.Execute(context);
 
             // TODO: Replace with an event
             while (work.State != WorkItemState.Complete)

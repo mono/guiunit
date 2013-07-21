@@ -38,6 +38,11 @@ namespace NUnit.Framework.Attributes
             get { return "dummy-test"; }
         }
 
+        public override Internal.WorkItems.WorkItem CreateWorkItem(ITestFilter childFilter)
+        {
+            throw new NotImplementedException();
+        }
+
         public override bool HasChildren
         {
             get

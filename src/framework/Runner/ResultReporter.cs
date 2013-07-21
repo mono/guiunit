@@ -126,7 +126,7 @@ namespace NUnitLite.Runner
         private void PrintErrorResults(ITestResult result)
         {
             if (result.ResultState.Status == TestStatus.Failed)
-                if (!result.HasChildren || result.FailureSite == FailureSite.SetUp || result.FailureSite == FailureSite.TearDown)
+                if (!result.HasChildren)
                     WriteSingleResult(result);
 
             if (result.HasChildren)

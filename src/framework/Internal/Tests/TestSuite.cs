@@ -179,6 +179,9 @@ namespace NUnit.Framework.Internal
         /// <returns>A TestCommand</returns>
         public virtual TestCommand GetOneTimeSetUpCommand()
         {
+            if (RunState != RunState.Runnable && RunState != RunState.Explicit)
+                return new SkipCommand(this);
+
             TestCommand command = new OneTimeSetUpCommand(this);
 
             if (this.FixtureType != null)
@@ -250,6 +253,19 @@ namespace NUnit.Framework.Internal
         public override TestResult MakeTestResult()
         {
             return new TestSuiteResult(this);
+        }
+
+        /// <summary>
+        /// Creates a WorkItem for executing this test.
+        /// </summary>
+        /// <param name="childFilter">A filter to be used in selecting child tests</param>
+        /// <returns>A new WorkItem</returns>
+        public override WorkItem CreateWorkItem(ITestFilter childFilter)
+        {
+            //return RunState == Api.RunState.Runnable || RunState == Api.RunState.Explicit
+            //    ? (WorkItem)new CompositeWorkItem(this, childFilter)
+            //    : (WorkItem)new SimpleWorkItem(this);
+            return new CompositeWorkItem(this, childFilter);
         }
 
         /// <summary>

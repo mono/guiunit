@@ -130,8 +130,8 @@ namespace NUnit.Framework.Internal
 #endif
             context.Listener = listener;
 
-            WorkItem workItem = WorkItem.CreateWorkItem(loadedTest, context, filter);
-            workItem.Execute();
+            WorkItem workItem = WorkItem.CreateWorkItem(loadedTest, filter);
+            workItem.Execute(context);
 
             while (workItem.State != WorkItemState.Complete)
                 System.Threading.Thread.Sleep(5);
