@@ -109,7 +109,7 @@ namespace NUnit.Framework.Internal
         /// </summary>
         private int testCaseTimeout;
 
-        private RandomGenerator random;
+        private RandomGenerator randomGenerator;
 
 #if !NETCF
         /// <summary>
@@ -336,15 +336,15 @@ namespace NUnit.Framework.Internal
         /// <summary>
         /// Gets the RandomGenerator specific to this Test
         /// </summary>
-        public RandomGenerator Random
+        public RandomGenerator RandomGenerator
         {
             get
             {
-                if (random == null)
+                if (randomGenerator == null)
                 {
-                    random = new RandomGenerator(currentTest.Seed);
+                    randomGenerator = new RandomGenerator(currentTest.Seed);
                 }
-                return random;
+                return randomGenerator;
             }
         }
 

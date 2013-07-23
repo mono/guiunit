@@ -29,19 +29,19 @@ namespace NUnit.Framework.Internal
     public class RandomizerTests
     {
         [Test]
-        public void RandomSeedsAreUnique()
+        public void RandomizersAreUnique()
         {
-            int[] seeds = new int[10];
+            int[] values = new int[10];
             for (int i = 0; i < 10; i++)
-                seeds[i] = Randomizer.RandomSeed;
+                values[i] = Randomizer.CreateRandomizer().Next();
 
-            Assert.That(seeds, Is.Unique);
+            Assert.That(values, Is.Unique);
         }
 
         [Test]
         public void RandomIntsAreUnique()
         {
-            Randomizer r = new Randomizer();
+            Randomizer r = Randomizer.CreateRandomizer();
 
             int[] values = new int[10];
             for (int i = 0; i < 10; i++)
@@ -53,7 +53,7 @@ namespace NUnit.Framework.Internal
         [Test]
         public void RandomDoublesAreUnique()
         {
-            Randomizer r = new Randomizer();
+            Randomizer r = Randomizer.CreateRandomizer();
 
             double[] values = new double[10];
             for (int i = 0; i < 10; i++)
@@ -65,7 +65,7 @@ namespace NUnit.Framework.Internal
         [Test]
         public void CanGetArrayOfRandomInts()
         {
-            Randomizer r = new Randomizer();
+            Randomizer r = Randomizer.CreateRandomizer();
 
             int[] ints = r.GetInts(1, 100, 10);
             Assert.That(ints.Length, Is.EqualTo(10));
@@ -76,7 +76,7 @@ namespace NUnit.Framework.Internal
         [Test]
         public void CanGetArrayOfRandomDoubles()
         {
-            Randomizer r = new Randomizer();
+            Randomizer r = Randomizer.CreateRandomizer();
 
             double[] doubles = r.GetDoubles(0.5, 1.5, 10);
             Assert.That(doubles.Length, Is.EqualTo(10));
@@ -90,7 +90,7 @@ namespace NUnit.Framework.Internal
         [Test]
         public void CanGetArrayOfRandomEnums()
         {
-            Randomizer r = new Randomizer();
+            Randomizer r = Randomizer.CreateRandomizer();
 
             object[] enums = r.GetEnums(10, typeof(AttributeTargets));
             Assert.That(enums.Length, Is.EqualTo(10));

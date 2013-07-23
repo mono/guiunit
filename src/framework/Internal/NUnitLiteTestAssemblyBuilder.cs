@@ -159,6 +159,7 @@ namespace NUnit.Framework.Internal
         private TestSuite BuildTestAssembly(string assemblyName, IList fixtures)
         {
             TestSuite testAssembly = new TestAssembly(this.assembly, assemblyName);
+            testAssembly.Seed = Randomizer.InitialSeed;
 
             //NamespaceTreeBuilder treeBuilder =
             //    new NamespaceTreeBuilder(testAssembly);

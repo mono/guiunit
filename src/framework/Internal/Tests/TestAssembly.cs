@@ -53,5 +53,14 @@ namespace NUnit.Framework.Internal
                 return "Assembly";
             }
         }
+
+        public override Api.XmlNode AddToXml(Api.XmlNode parentNode, bool recursive)
+        {
+            Api.XmlNode thisNode = base.AddToXml(parentNode, recursive);
+
+            thisNode.AddAttribute("assemblySeed", Randomizer.InitialSeed.ToString());
+
+            return thisNode;
+        }
     }
 }

@@ -180,6 +180,8 @@ namespace NUnit.Framework.Internal
 
             PopulateTestNode(thisNode, recursive);
 
+            thisNode.AddAttribute("seed", this.Seed.ToString());
+
             return thisNode;
         }
 

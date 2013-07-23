@@ -170,6 +170,9 @@ namespace NUnit.Framework.Internal
             expected.Append(" name=" + Quoted(result.Name));
             expected.Append(" fullname=" + Quoted(result.FullName));
 
+            if (suiteResult == null)
+                expected.Append(" seed=" + Quoted(result.Test.Seed));
+
             if (suiteResult != null)
                 expected.Append(" testcasecount=" + Quoted(result.Test.TestCaseCount));
 

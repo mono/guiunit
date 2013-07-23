@@ -48,7 +48,8 @@ namespace NUnit.Framework.Builders
     /// </summary>
     public class NUnitTestCaseBuilder : ITestCaseBuilder2
 	{
-        private Randomizer random;
+        private Randomizer randomizer;
+
 #if NUNITLITE
         private ITestCaseProvider testCaseProvider = new TestCaseProviders();
 #else
@@ -60,7 +61,8 @@ namespace NUnit.Framework.Builders
         public NUnitTestCaseBuilder()
         {
             //MethodBase.GetCurrentMethod does not compile on NETCF so this method is used instead
-            random = Randomizer.GetRandomizer(typeof(NUnitTestCaseBuilder).GetConstructor(new Type[0]));
+            //randomizer = Randomizer.GetRandomizer(typeof(NUnitTestCaseBuilder).GetConstructor(new Type[0]));
+            randomizer = Randomizer.CreateRandomizer();
         }
 
         #region ITestCaseBuilder Methods
@@ -181,7 +183,7 @@ namespace NUnit.Framework.Builders
         {
             TestMethod testMethod = new TestMethod(method, parentSuite);
 
-            testMethod.Seed = random.Next();
+            testMethod.Seed = randomizer.Next();
 
             string prefix = method.ReflectedType.FullName;
 

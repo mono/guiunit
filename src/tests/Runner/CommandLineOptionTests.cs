@@ -39,6 +39,144 @@ namespace NUnitLite.Runner.Tests
         }
 
         [Test]
+        public void TestHelpOption()
+        {
+            options.Parse("-help");
+            Assert.That(options.Error, Is.False);
+            Assert.That(options.ShowHelp, Is.True);
+        }
+
+        [Test]
+        public void TestFullOption()
+        {
+            options.Parse("-full");
+            Assert.That(options.Error, Is.False);
+            Assert.That(options.Full, Is.True);
+        }
+
+        [Test]
+        public void TestExploreOptionWithNoFileName()
+        {
+            options.Parse("-explore");
+            Assert.That(options.Error, Is.False);
+            Assert.That(options.Explore, Is.True);
+            Assert.That(options.ExploreFile, Is.EqualTo(Path.GetFullPath("tests.xml")));
+        }
+
+        [Test]
+        public void TestExploreOptionWithGoodFileName()
+        {
+            options.Parse("-explore=MyFile.xml");
+            Assert.That(options.Error, Is.False);
+            Assert.That(options.Explore, Is.True);
+            Assert.That(options.ExploreFile, Is.EqualTo(Path.GetFullPath("MyFile.xml")));
+        }
+
+        [Test]
+        public void TestExploreOptionWithBadFileName()
+        {
+            options.Parse("-explore=MyFile*.xml");
+            Assert.That(options.Error, Is.True);
+            Assert.That(options.ErrorMessage, Is.EqualTo("Invalid option: -explore=MyFile*.xml" + Env.NewLine));
+        }
+
+        [Test]
+        public void TestResultOptionWithNoFileName()
+        {
+            options.Parse("-result");
+            Assert.That(options.Error, Is.False);
+            Assert.That(options.ResultFile, Is.EqualTo(Path.GetFullPath("TestResult.xml")));
+        }
+
+        [Test]
+        public void TestResultOptionWithGoodFileName()
+        {
+            options.Parse("-result=MyResult.xml");
+            Assert.That(options.Error, Is.False);
+            Assert.That(options.ResultFile, Is.EqualTo(Path.GetFullPath("MyResult.xml")));
+        }
+
+        [Test]
+        public void TestResultOptionWithBadFileName()
+        {
+            options.Parse("-result=MyResult*.xml");
+            Assert.That(options.Error, Is.True);
+            Assert.That(options.ErrorMessage, Is.EqualTo("Invalid option: -result=MyResult*.xml" + Env.NewLine));
+        }
+
+        [Test]
+        public void TestNUnit2FormatOption()
+        {
+            options.Parse("-format=nunit2");
+            Assert.That(options.Error, Is.False);
+            Assert.That(options.ResultFormat, Is.EqualTo("nunit2"));
+        }
+
+        [Test]
+        public void TestNUnit3FormatOption()
+        {
+            options.Parse("-format=nunit3");
+            Assert.That(options.Error, Is.False);
+            Assert.That(options.ResultFormat, Is.EqualTo("nunit3"));
+        }
+
+        [Test]
+        public void TestBadFormatOption()
+        {
+            options.Parse("-format=xyz");
+            Assert.That(options.Error, Is.True);
+            Assert.That(options.ErrorMessage, Is.EqualTo("Invalid option: -format=xyz" + Env.NewLine));
+        }
+
+        [Test]
+        public void TestMissingFormatOption()
+        {
+            options.Parse("-format");
+            Assert.That(options.Error, Is.True);
+            Assert.That(options.ErrorMessage, Is.EqualTo("Invalid option: -format" + Env.NewLine));
+        }
+
+        [Test]
+        public void TestOutOptionWithGoodFileName()
+        {
+            options.Parse("-out=myfile.txt");
+            Assert.False(options.Error);
+            Assert.That(options.OutFile, Is.EqualTo(Path.GetFullPath("myfile.txt")));
+        }
+
+        [Test]
+        public void TestOutOptionWithNoFileName()
+        {
+            options.Parse("-out=");
+            Assert.True(options.Error);
+            Assert.That(options.ErrorMessage, Is.EqualTo("Invalid option: -out=" + Env.NewLine));
+        }
+
+        [Test]
+        public void TestOutOptionWithBadFileName()
+        {
+            options.Parse("-out=my*file.txt");
+            Assert.True(options.Error);
+            Assert.That(options.ErrorMessage, Is.EqualTo("Invalid option: -out=my*file.txt" + Env.NewLine));
+        }
+
+        [Test]
+        public void TestLabelsOption()
+        {
+            options.Parse("-labels");
+            Assert.That(options.Error, Is.False);
+            Assert.That(options.LabelTestsInOutput, Is.True);
+        }
+
+        [Test]
+        public void TestSeedOption()
+        {
+            options.Parse("-seed=123456789");
+            Assert.False(options.Error);
+            Assert.That(options.InitialSeed, Is.EqualTo(123456789));
+        }
+
+        [Test]
         public void OptionNotRecognizedUnlessPrecededByOptionChar()
         {
             options.Parse( "/wait" );

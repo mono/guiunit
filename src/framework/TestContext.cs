@@ -50,14 +50,6 @@ namespace NUnit.Framework
             this.ec = ec;
         }
 
-        /// <summary>
-        /// Initialize Test Context Properties
-        /// </summary>
-        static TestContext()
-        {
-            AssemblySeed = new Random().Next();
-        }
-
         #endregion
 
         #region Properties
@@ -101,12 +93,6 @@ namespace NUnit.Framework
             }
         }
 
-        /// <summary>
-        /// Sets and Gets the Assembly Seed used to generate Seeds
-        /// for Random Generators in Tests
-        /// </summary>
-        internal static int AssemblySeed { set; get; }
-
 #if !NETCF
         /// <summary>
         /// Gets the directory containing the current test assembly.
@@ -136,7 +122,7 @@ namespace NUnit.Framework
         {
             get
             {
-                return ec.Random;
+                return ec.RandomGenerator;
             }
         }
 
