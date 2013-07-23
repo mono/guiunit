@@ -165,7 +165,7 @@ namespace NUnit.Framework.Internal.WorkItems
         {
             while (_children.Count > 0)
             {
-                WorkItem child = _children.Dequeue();
+                WorkItem child = (WorkItem)_children.Dequeue();
                 Test test = child.Test;
                 TestResult result = test.MakeTestResult();
                 if (Result.ResultState.Status == TestStatus.Failed)
