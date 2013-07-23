@@ -31,6 +31,7 @@ using NUnit.Framework.Internal;
 using NUnit.Framework.Internal.Filters;
 using System.Diagnostics;
 using NUnitLite.Runner;
+using System.Net;
 
 namespace GuiUnit
 {
@@ -49,14 +50,6 @@ namespace GuiUnit
 
 		public static int Main (string[] args)
 		{
-			Environment.ExitCode = 1;
-			for (int i = 0; i  <args.Length; i ++) {
-				if (args [i].Contains ("-xml"))
-					args [i] = args [i].Replace ("-xml", "-result");
-				if (args [i].Contains ("-run")) {
-					args [i] = args [i].Replace ("-run", "-test");
-				}
-			}
 			new TestRunner ().Execute (args);
 			return 0;
 		}
@@ -117,6 +110,10 @@ namespace GuiUnit
 
 			if (commandLineOptions.OutFile != null)
 				this.writer = new StreamWriter(commandLineOptions.OutFile);
+
+			if (listener == TestListener.NULL && commandLineOptions.Port != -1) {
+				listener = new XmlTestListener (new TcpWriter (new IPEndPoint (IPAddress.Loopback, commandLineOptions.Port)));
+			}
 
 			if (!commandLineOptions.NoHeader)
 				WriteHeader(this.writer);
@@ -354,6 +351,7 @@ namespace GuiUnit
 		{
 			if (commandLineOptions.LabelTestsInOutput)
 				writer.WriteLine("***** {0}", test.Name);
+			listener.TestStarted (test);
 		}
 
 		/// <summary>
@@ -362,6 +360,7 @@ namespace GuiUnit
 		/// <param name="result">The result of the test</param>
 		public void TestFinished(ITestResult result)
 		{
+			listener.TestFinished (result);
 		}
 
 		/// <summary>
@@ -370,6 +369,7 @@ namespace GuiUnit
 		/// <param name="testOutput">A TestOutput object holding the text that was written</param>
 		public void TestOutput(TestOutput testOutput)
 		{
+			listener.TestOutput (testOutput);
 		}
 
 		#endregion

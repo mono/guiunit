@@ -25,6 +25,7 @@ using System;
 using System.IO;
 using System.Net.Sockets;
 using System.Text;
+using System.Net;
 
 namespace NUnitLite.Runner
 {
@@ -40,11 +41,10 @@ namespace NUnitLite.Runner
         private NetworkStream stream;
         private StreamWriter writer;
 
-        public TcpWriter(string hostName, int port)
+        public TcpWriter(IPEndPoint endpoint)
         {
-            this.hostName = hostName;
-            this.port = port;
-            this.client = new TcpClient(hostName, port);
+            this.client = new TcpClient();
+            this.client.Connect (endpoint);
             this.stream = client.GetStream();
             this.writer = new StreamWriter(stream);
         }
@@ -67,7 +67,7 @@ namespace NUnitLite.Runner
 
         public override System.Text.Encoding Encoding
         {
-            get { return System.Text.Encoding.Default; }
+            get { return System.Text.Encoding.UTF8; }
         }
     }
 }

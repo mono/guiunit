@@ -40,6 +40,7 @@ namespace NUnitLite.Runner
         private string optionChars;
         private static string NL = NUnit.Env.NewLine;
 
+        private int port = -1;
         private bool wait = false;
         private bool noheader = false;
         private bool help = false;
@@ -143,6 +144,18 @@ namespace NUnitLite.Runner
             get 
             {
                 return ExpandToFullPath(outFile);
+            }
+        }
+
+        /// <summary>
+                /// The port to create a TCP connection to and write test output
+                /// </summary>
+                /// <value>The port.</value>
+        public int Port
+        {
+            get
+            {
+                return port;
             }
         }
 
@@ -254,6 +267,9 @@ namespace NUnitLite.Runner
                 case "wait":
                     wait = true;
                     break;
+                case "port":
+                    port = int.Parse (val);
+                    break;
                 case "noheader":
                 case "noh":
                     noheader = true;
@@ -262,6 +278,7 @@ namespace NUnitLite.Runner
                 case "h":
                     help = true;
                     break;
+                case "run":
                 case "test":
                     tests.Add(val);
                     break;
@@ -272,6 +289,7 @@ namespace NUnitLite.Runner
                     explore = true;
                     exploreFile = val;
                     break;
+                case "xml":
                 case "result":
                     resultFile = val;
                     break;

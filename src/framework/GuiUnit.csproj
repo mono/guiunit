@@ -65,6 +65,7 @@
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\ExpectedExceptionData.cs" />
@@ -342,6 +343,7 @@
     <Compile Include="GuiUnit\XwtMainLoopIntegration.cs" />
     <Compile Include="GuiUnit\InvokerHelper.cs" />
     <Compile Include="GuiUnit\MonoMacMainLoopIntegration.cs" />
+    <Compile Include="GuiUnit\XmlTestListener.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

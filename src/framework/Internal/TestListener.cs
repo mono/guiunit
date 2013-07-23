@@ -32,6 +32,8 @@ namespace NUnit.Framework.Internal
 	/// </summary>
 	public class TestListener : ITestListener
 	{
+		static readonly TestListener NullListener = new TestListener ();
+
         /// <summary>
         /// Called when a test has just started
         /// </summary>
@@ -60,7 +62,7 @@ namespace NUnit.Framework.Internal
         /// </summary>
 		public static ITestListener NULL
 		{
-			get { return new TestListener();}
+			get { return NullListener; }
 		}
 	}
 }
