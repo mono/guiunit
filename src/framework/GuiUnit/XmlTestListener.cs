@@ -26,10 +26,15 @@ namespace GuiUnit
 
 		public void TestFinished (ITestResult result)
 		{
-			if (result.Test.HasChildren)
-				Write (new XElement ("suite-finished", new XAttribute ("name", result.Test.FullName), new XAttribute ("result", ToXmlString (result.ResultState))));
-			else
-				Write (new XElement ("test-finished", new XAttribute ("name", result.Test.FullName), new XAttribute ("result", ToXmlString (result.ResultState))));
+			var element = new XElement (result.Test.HasChildren ? "suite-finished" : "test-finished",
+			                            new XAttribute ("name", result.Test.FullName),
+			                            new XAttribute ("result", ToXmlString (result.ResultState)),
+			                            new XAttribute ("passed", result.PassCount),
+			                            new XAttribute ("failures", result.FailCount),
+			                            new XAttribute ("ignored", result.SkipCount),
+			                            new XAttribute ("inconclusive", result.InconclusiveCount)
+			);
+			Write (element);
 		}
 
 		public void TestOutput (TestOutput testOutput)
