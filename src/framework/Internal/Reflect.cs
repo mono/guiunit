@@ -225,20 +225,30 @@ namespace NUnit.Framework.Internal
 
 					if (invokeHelper.Result is System.Threading.Tasks.Task)
 						((System.Threading.Tasks.Task)invokeHelper.Result).Wait ();
+					else if (invokeHelper.ex != null)
+						Rethrow (invokeHelper.ex);
 					return invokeHelper.Result;
 				}
 				catch(Exception e)
 				{
-                    if (e is TargetInvocationException)
-                        throw new NUnitException("Rethrown", e.InnerException);
-                    else
-                        throw new NUnitException("Rethrown", e);
+					Rethrow (e);
                 }
 			}
 
 		    return null;
 		}
 
+		static void Rethrow (Exception e)
+		{
+			string Rethrown = "Rethrown";
+			if (e is NUnitException && e.Message == Rethrown)
+				throw e;
+
+			if (e is TargetInvocationException || e is AggregateException)
+				throw new NUnitException(Rethrown, e.InnerException);
+			else
+				throw new NUnitException(Rethrown, e);
+		}
 		#endregion
 
         #region Private Constructor for static-only class
