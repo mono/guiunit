@@ -288,17 +288,20 @@ namespace NUnit.Framework.Builders
 
         private bool CheckSetUpTearDownMethods(TestFixture fixture, MethodInfo[] methods)
         {
-            foreach (MethodInfo method in methods)
+            foreach (MethodInfo method in methods) {
                 if (method.IsAbstract ||
                      !method.IsPublic && !method.IsFamily ||
                      method.GetParameters().Length > 0 ||
                      !method.ReturnType.Equals(typeof(void)))
-                {
-				if (!MethodHelper.IsAsyncMethod (method))
-                    SetNotRunnable(fixture, string.Format("Invalid signature for Setup or TearDown method: {0}", method.Name));
-                    return false;
-                }
-
+				{
+#if NET_4_5
+					if (MethodHelper.IsAsyncMethod (method))
+						return true;
+#endif
+					SetNotRunnable(fixture, string.Format("Invalid signature for Setup or TearDown method: {0}", method.Name));
+					return false;
+				}
+			}
             return true;
         }
 
