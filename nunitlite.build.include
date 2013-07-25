@@ -20,12 +20,14 @@
     value="${path::combine(project.base.dir,'package')}"/>
 
   <!-- Root of the package file name -->
+  <property name="package.base.name"
+    value="${project.name}-${package.version}"/>
   <property name="package.name" 
-    value="${project.name}-${package.version}${package.suffix}"/>
+    value="${package.base.name}${package.suffix}"/>
 
   <!-- Package directories -->
   <property name="package.working.dir" 
-    value="${path::combine(project.package.dir,package.name)}"/>
+    value="${path::combine(project.package.dir,package.base.name)}"/>
   <property name="package.src.dir" 
     value="${path::combine(package.working.dir,'src')}"/>
   <property name="package.tools.dir" 
@@ -120,7 +122,7 @@
     <property name="runtime.defines" value="NET,NET_1_1,CLR_1_1"/>
     <property name="build.framework" value="net-1.1"/>
     <property name="build.method" value="nant"/>
-    <property name="msbuild.proj.suffix" value=""/>c
+    <property name="msbuild.proj.suffix" value=""/>
   </target>
 	
   <target name="set-net-2.0-runtime-config">
@@ -406,6 +408,7 @@
     <echo>  Defines:   ${build.defines}</echo>
     <echo>  Builder:   ${msbuild.exe}</echo>
     <echo>  Version:   ${package.version}</echo>
+	<echo>  Package Base Name: ${package.base.name}</echo>
     <echo>  Package:   ${package.name}</echo>
     <echo></echo>
     <echo>Current Working Directories</echo>

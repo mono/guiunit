@@ -33,7 +33,7 @@ using System;
 [assembly: AssemblyDescription("NUnitLite unit-testing framework")]
 [assembly: AssemblyCompany("NUnit Software")]
 [assembly: AssemblyProduct("NUnitLite")]
-[assembly: AssemblyCopyright("Copyright 2012, Charlie Poole")]
+[assembly: AssemblyCopyright("Copyright 2013, Charlie Poole")]
 [assembly: AssemblyTrademark("NUnitLite")]
 [assembly: AssemblyCulture("")]
 
@@ -104,7 +104,7 @@ using System;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("0.9.0.0")]
+[assembly: AssemblyVersion("1.0.0.0")]
 #if !PocketPC && !WindowsCE && !NETCF
-[assembly: AssemblyFileVersion("0.9.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]
 #endif

@@ -49,15 +49,10 @@ Use   nant -projecthelp to see a full list of targets.
   <property name="project.name" value="NUnitLite"/>
 
   <!-- NUnit version for packaging -->
-  <property name="package.version" value="0.9.0"/>
+  <property name="package.version" value="1.0.0"/>
 
   <!-- Additional suffix used to distinguish files with the same version -->
-  <property name="package.suffix" value=""/>
-
-  <!-- Nominal version used for install directory and program
-       files menu. Normally the same as the package version, 
-       but may differ when we are in alpha or beta. -->
-  <property name="nominal.version" value="0.9.0" />
+  <property name="package.suffix" value="-Beta"/>
 
   <!-- Frameworks supported by this build script -->
   <property name="supported.frameworks"
@@ -66,6 +61,9 @@ Use   nant -projecthelp to see a full list of targets.
   <!-- Framework versions for which packages are normally created -->
   <property name="standard.packages"
     value="net-1.1,net-2.0,net-3.5,net-4.0,net-4.5,netcf-2.0,netcf-3.5,silverlight-3.0,silverlight-4.0,silverlight-5.0" />
+	
+	<!-- Nuget packages normally created -->
+	<property name="nuget.packages" value="NUnitLite,NUnitLiteCF"/>
 
   <!-- Additional internal properties are set in the include file -->
   <include buildfile="nunitlite.build.include"/>
@@ -328,17 +326,35 @@ Use   nant -projecthelp to see a full list of targets.
     </foreach>
 
     <!-- Create the zip file -->
-    <zip zipfile="${project.package.dir}/${package.name}.zip" ziplevel="9">
-      <fileset basedir="${package.working.dir}" prefix="${package.name}">
+	<property name="zip.file.name" value="${package.name}" unless="${build.debug}"/>
+	<property name="zip.file.name" value="${package.name}-dbg" if="${build.debug}"/>
+	
+    <zip zipfile="${project.package.dir}/${zip.file.name}.zip" ziplevel="9">
+      <fileset basedir="${package.working.dir}" prefix="${package.base.name}">
         <include name="**"/>
       </fileset>
     </zip>
 
-    <!-- Create the NuGet package -->
-    <exec program="NuGet.exe"
-          commandline="pack NUnitLite.nuspec -OutputDirectory package -Version ${package.version}"
+    <!-- Create the NuGet packages -->
+	<foreach item="String" delim="," property="nuget.package.name" in="${nuget.packages}">
+		  
+	  <copy file="${nuget.package.name}.nuspec"
+		  tofile="_TEMP.nuspec"
+		  overwrite="true">
+		  <filterchain>
+			  <expandproperties/>
+		  </filterchain>
+	  </copy>
+
+	  <exec program="NuGet.exe"
+          commandline="pack _TEMP.nuspec -OutputDirectory package"
           workingdir="."/>
 
+		<move file="package/${nuget.package.name}.${package.version}.nupkg"
+			  tofile="package/${nuget.package.name}.${package.version}-dbg.nupkg"
+			  if="${build.debug}"/>
+
+	</foreach>
   </target>
 
   <target name="package-build" depends="build"
@@ -346,8 +362,10 @@ Use   nant -projecthelp to see a full list of targets.
 
     <copy todir="${package.working.dir}/${runtime.config}">
       <fileset basedir="${current.build.dir}">
-        <include name="*"/>
-      </fileset>
+		  <include name="nunitlite.dll"/>
+		  <include name="nunitlite.pdb"/>
+		  <include name="nunitlite.xml"/>
+	  </fileset>
     </copy>
 
   </target>
@@ -374,7 +392,7 @@ Use   nant -projecthelp to see a full list of targets.
 
     <!-- Create the zip file -->
     <zip zipfile="${project.package.dir}/${package.name}-src.zip" ziplevel="9">
-      <fileset basedir="${package.working.dir}" prefix="${package.name}">
+      <fileset basedir="${package.working.dir}" prefix="${package.base.name}">
         <include name="**"/>
       </fileset>
     </zip>
