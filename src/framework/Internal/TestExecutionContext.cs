@@ -54,7 +54,7 @@ namespace NUnit.Framework.Internal
 	/// </summary>
 	public class TestExecutionContext
 #if !SILVERLIGHT && !NETCF
-        : ILogicalThreadAffinative
+        //: ILogicalThreadAffinative
 #endif
 	{
         #region Instance Fields

@@ -6,6 +6,7 @@ namespace NUnit.Framework
 	{
 		#region Greater
 
+		#region int
 		public static void Greater(int expected, int actual, string message, params object[] args)
 		{
 			Assert.That(expected, Is.GreaterThan (actual), message, args);
@@ -20,6 +21,64 @@ namespace NUnit.Framework
 		{
 			Assert.That(expected, Is.GreaterThan (actual));
 		}
+		#endregion
+
+		#region double
+		
+		public static void Greater(double expected, double actual, string message, params object[] args)
+		{
+			Assert.That(expected, Is.GreaterThan (actual), message, args);
+		}
+
+		public static void Greater(double expected, double actual, string message)
+		{
+			Assert.That(expected, Is.GreaterThan (actual), message, null);
+		}
+
+		public static void Greater(double expected, double actual)
+		{
+			Assert.That(expected, Is.GreaterThan (actual));
+		}
+		#endregion
+
+		#endregion
+
+		#region Less
+
+		#region int
+		public static void Less(int expected, int actual, string message, params object[] args)
+		{
+			Assert.That(expected, Is.LessThan (actual), message, args);
+		}
+
+		public static void Less(int expected, int actual, string message)
+		{
+			Assert.That(expected, Is.LessThan (actual), message, null);
+		}
+
+		public static void Less(int expected, int actual)
+		{
+			Assert.That(expected, Is.LessThan (actual));
+		}
+		#endregion
+
+		#region double
+
+		public static void Less(double expected, double actual, string message, params object[] args)
+		{
+			Assert.That(expected, Is.LessThan (actual), message, args);
+		}
+
+		public static void Less(double expected, double actual, string message)
+		{
+			Assert.That(expected, Is.LessThan (actual), message, null);
+		}
+
+		public static void Less(double expected, double actual)
+		{
+			Assert.That(expected, Is.LessThan (actual));
+		}
+		#endregion
 
 		#endregion
 
