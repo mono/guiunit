@@ -344,6 +344,7 @@
     <Compile Include="GuiUnit\MonoMacMainLoopIntegration.cs" />
     <Compile Include="GuiUnit\XmlTestListener.cs" />
     <Compile Include="GuiUnit\AdditionalAsserts.cs" />
+    <Compile Include="GuiUnit\GtkMainLoopIntegration.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

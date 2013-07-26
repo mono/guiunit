@@ -42,6 +42,7 @@ namespace GuiUnit
 			get {
 				try { mainLoop = mainLoop ?? new XwtMainLoopIntegration (); } catch { }
 				try { mainLoop = mainLoop ?? new MonoMacMainLoopIntegration (); } catch { }
+				try { mainLoop = mainLoop ?? new GtkMainLoopIntegration (); } catch { }
 				return mainLoop;
 			} set {
 				mainLoop = value;
