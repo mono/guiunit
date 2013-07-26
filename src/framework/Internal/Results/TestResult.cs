@@ -240,7 +240,6 @@ namespace NUnit.Framework.Internal
             XmlNode topNode = XmlNode.CreateTopLevelElement("dummy");
 
             AddToXml(topNode, recursive);
-            //topNode.FirstChild.AddAttribute("assemblySeed", TestContext.AssemblySeed.ToString());
 
             return topNode.FirstChild;
         }

@@ -53,8 +53,8 @@ namespace NUnit.Framework.Internal
 
             if (fixtures.Count > 0)
             {
-                AssemblyName assemblyName = AssemblyHelper.GetAssemblyName(assembly);
-                return BuildTestAssembly(assemblyName.Name, fixtures);
+                string assemblyPath = AssemblyHelper.GetAssemblyPath(assembly);
+                return BuildTestAssembly(assemblyPath, fixtures);
             }
 
             return null;

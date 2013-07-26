@@ -1,3 +1,22 @@
+NUnitLite Version 1.0 Beta - ??? ?, 2013
+
+Runner
+
+* The build-in runner now accepts a -seed option, which may be used to
+set the seed for random arguments as well as for use by TestContext.Random.
+By setting the seed to the value used in a prior run, the same sequence
+of random values will be used in the current run, provided the tests
+have not been changed in any way between runs.
+
+Bug Fixes
+
+* 1111838	Include Random Seed in Test Report
+* 1182634	TestContext.Random.GetEnm isn't generic in .NET 4
+* 1183582	Add -seed /seed Command Line Option
+* 1203360	Tests under Ignored fixtures are not reported
+* 1203959	Resolve level of Silverlight support for the release
+* 1203961	Review and revise XML format for release
+
 NUnitLite Version 0.9 - May 5, 2013
 
 Framework

@@ -25,7 +25,7 @@ namespace NUnitLite.Runner.Tests
 
             StringBuilder sb = new StringBuilder();
             StringWriter writer = new StringWriter(sb);
-            new NUnit2XmlOutputWriter().WriteResultFile(result, writer);
+            new NUnit2XmlOutputWriter(DateTime.Now).WriteResultFile(result, writer);
             writer.Close();
 
 #if DEBUG
