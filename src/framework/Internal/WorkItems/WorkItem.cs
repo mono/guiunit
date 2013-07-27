@@ -24,7 +24,6 @@
 using System;
 using System.Diagnostics;
 using System.Threading;
-using NUnit.Framework.Internal.Commands;
 using NUnit.Framework.Api;
 
 namespace NUnit.Framework.Internal.WorkItems
@@ -51,25 +50,6 @@ namespace NUnit.Framework.Internal.WorkItems
 
         // The execution context used by this work item
         private TestExecutionContext _context;
-
-        #region Static Factory Method
-        
-        /// <summary>
-        /// Create a WorkItem appropriate for the test to be run
-        /// </summary>
-        /// <param name="test">The test to be executed</param>
-        /// <param name="context">The execution context in which the test will be run</param>
-        /// <param name="filter">A filter for selecting chind tests</param>
-        /// <returns></returns>
-        public static WorkItem CreateWorkItem(Test test, ITestFilter filter)
-        {
-            //if (test.RunState != RunState.Runnable && test.RunState != RunState.Explicit)
-            //    return new SimpleWorkItem(new SkipCommand(test));
-
-            return test.CreateWorkItem(filter);
-        }
-
-        #endregion
 
         #region Constructor
 

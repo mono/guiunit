@@ -96,7 +96,7 @@ namespace NUnit.TestUtilities
             TestExecutionContext context = new TestExecutionContext();
             context.TestObject = fixture;
 
-            WorkItem work = WorkItem.CreateWorkItem(suite, TestFilter.Empty);
+            WorkItem work = suite.CreateWorkItem(TestFilter.Empty);
             return ExecuteAndWaitForResult(work, context);
         }
 
@@ -138,7 +138,7 @@ namespace NUnit.TestUtilities
             TestExecutionContext context = new TestExecutionContext();
             context.TestObject = testObject;
 
-            WorkItem work = WorkItem.CreateWorkItem(test, TestFilter.Empty);
+            WorkItem work = test.CreateWorkItem(TestFilter.Empty);
             work.Execute(context);
 
             return work;
@@ -149,7 +149,7 @@ namespace NUnit.TestUtilities
             TestExecutionContext context = new TestExecutionContext();
             context.TestObject = testObject;
 
-            WorkItem work = WorkItem.CreateWorkItem(test, TestFilter.Empty);
+            WorkItem work = test.CreateWorkItem(TestFilter.Empty);
             return ExecuteAndWaitForResult(work, context);
         }
 

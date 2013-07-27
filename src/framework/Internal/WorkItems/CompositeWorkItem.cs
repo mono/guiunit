@@ -72,7 +72,7 @@ namespace NUnit.Framework.Internal.WorkItems
             if (_suite.HasChildren)
                 foreach (Test test in _suite.Tests)
                     if (_childFilter.Pass(test))
-                        _children.Enqueue(CreateWorkItem(test, _childFilter));
+                        _children.Enqueue(test.CreateWorkItem(_childFilter));
 
             switch (Test.RunState)
             {
