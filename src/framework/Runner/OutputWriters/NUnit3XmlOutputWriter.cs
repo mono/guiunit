@@ -128,11 +128,13 @@ namespace NUnitLite.Runner
             xmlWriter.WriteAttributeString("clr-version", Environment.Version.ToString());
             xmlWriter.WriteAttributeString("os-version", Environment.OSVersion.ToString());
             xmlWriter.WriteAttributeString("platform", Environment.OSVersion.Platform.ToString());
+#if !NETCF
             xmlWriter.WriteAttributeString("cwd", Environment.CurrentDirectory);
 #if !SILVERLIGHT
             xmlWriter.WriteAttributeString("machine-name", Environment.MachineName);
             xmlWriter.WriteAttributeString("user", Environment.UserName);
             xmlWriter.WriteAttributeString("user-domain", Environment.UserDomainName);
+#endif
 #endif
             xmlWriter.WriteAttributeString("culture", System.Globalization.CultureInfo.CurrentCulture.ToString());
             xmlWriter.WriteAttributeString("uiculture", System.Globalization.CultureInfo.CurrentUICulture.ToString());
