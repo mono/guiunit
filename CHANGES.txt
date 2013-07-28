@@ -1,4 +1,4 @@
-NUnitLite Version 1.0 Beta - ??? ?, 2013
+NUnitLite Version 1.0 Beta - July 28, 2013
 
 Runner
 
