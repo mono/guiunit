@@ -53,7 +53,7 @@ namespace NUnit.Framework.Internal
 
             if (fixtures.Count > 0)
             {
-#if NETCF
+#if NETCF || SILVERLIGHT
                 AssemblyName assemblyName = AssemblyHelper.GetAssemblyName(assembly);
                 return BuildTestAssembly(assemblyName.Name, fixtures);
 #else   

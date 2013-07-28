@@ -54,6 +54,7 @@ namespace NUnitLite.Runner.Tests
             Assert.That(options.Full, Is.True);
         }
 
+#if !SILVERLIGHT
         [Test]
         public void TestExploreOptionWithNoFileName()
         {
@@ -71,6 +72,7 @@ namespace NUnitLite.Runner.Tests
             Assert.That(options.Explore, Is.True);
             Assert.That(options.ExploreFile, Is.EqualTo(Path.GetFullPath("MyFile.xml")));
         }
+#endif
 
         [Test]
         public void TestExploreOptionWithBadFileName()
@@ -80,6 +82,7 @@ namespace NUnitLite.Runner.Tests
             Assert.That(options.ErrorMessage, Is.EqualTo("Invalid option: -explore=MyFile*.xml" + Env.NewLine));
         }
 
+#if !SILVERLIGHT
         [Test]
         public void TestResultOptionWithNoFileName()
         {
@@ -95,6 +98,7 @@ namespace NUnitLite.Runner.Tests
             Assert.That(options.Error, Is.False);
             Assert.That(options.ResultFile, Is.EqualTo(Path.GetFullPath("MyResult.xml")));
         }
+#endif
 
         [Test]
         public void TestResultOptionWithBadFileName()
@@ -136,6 +140,7 @@ namespace NUnitLite.Runner.Tests
             Assert.That(options.ErrorMessage, Is.EqualTo("Invalid option: -format" + Env.NewLine));
         }
 
+#if !SILVERLIGHT
         [Test]
         public void TestOutOptionWithGoodFileName()
         {
@@ -143,6 +148,7 @@ namespace NUnitLite.Runner.Tests
             Assert.False(options.Error);
             Assert.That(options.OutFile, Is.EqualTo(Path.GetFullPath("myfile.txt")));
         }
+#endif
 
         [Test]
         public void TestOutOptionWithNoFileName()
