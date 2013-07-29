@@ -34,7 +34,7 @@ using System.Security.Principal;
 #endif
 
 using NUnit.Framework.Api;
-#if !NETCF
+#if !SILVERLIGHT && !NETCF
 using System.Runtime.Remoting.Messaging;
 #endif
 
@@ -239,7 +239,6 @@ namespace NUnit.Framework.Internal
         /// <summary>
         /// The current context, head of the list of saved contexts.
         /// </summary>
-
         private static TestExecutionContext current;
         /// <summary>
         /// Gets the current context.
@@ -359,7 +358,7 @@ namespace NUnit.Framework.Internal
         }
 
         /// <summary>
-        /// Gets or sets the test case timeout vaue
+        /// Gets or sets the test case timeout value
         /// </summary>
         public int TestCaseTimeout
         {

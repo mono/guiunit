@@ -210,8 +210,6 @@ namespace NUnit.Framework.Internal
 		{
 			if(method != null)
 			{
-                if (fixture == null && !method.IsStatic)
-                    Console.WriteLine("Trying to call {0} without an instance", method.Name);
 				try
 				{
 					if (LocationProperty != null)

@@ -36,9 +36,9 @@ namespace NUnit.Framework.Internal
 
 #if !NETCF
         /// <summary>
-        /// Gets the path from which the assembly defining a Type was loaded.
+        /// Gets the path from which the assembly defining a type was loaded.
         /// </summary>
-        /// <param name="assembly">The Type.</param>
+        /// <param name="type">The Type.</param>
         /// <returns>The path.</returns>
         public static string GetAssemblyPath(Type type)
         {
