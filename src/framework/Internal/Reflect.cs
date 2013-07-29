@@ -234,8 +234,7 @@ namespace NUnit.Framework.Internal
 
 					if (result is System.Threading.Tasks.Task)
 						((System.Threading.Tasks.Task) result).Wait ();
-					else
-						return result;
+					return result;
 				}
 				catch(Exception e)
 				{
