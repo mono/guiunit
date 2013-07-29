@@ -215,19 +215,27 @@ namespace NUnit.Framework.Internal
 				try
 				{
 					Environment.CurrentDirectory = System.IO.Path.GetDirectoryName (method.DeclaringType.Assembly.Location);
-					var invokeHelper = new GuiUnit.InvokerHelper {
-						Context = TestExecutionContext.CurrentContext,
-						Func = () => method.Invoke( fixture, args )
-					};
 
-					GuiUnit.TestRunner.MainLoop.InvokeOnMainLoop (invokeHelper);
-					invokeHelper.Waiter.WaitOne ();
+					object result = null;
+					if (GuiUnit.TestRunner.MainLoop == null) {
+						result = method.Invoke (fixture, args);
+					} else {
+						var invokeHelper = new GuiUnit.InvokerHelper {
+							Context = TestExecutionContext.CurrentContext,
+							Func = () => method.Invoke( fixture, args )
+						};
 
-					if (invokeHelper.Result is System.Threading.Tasks.Task)
-						((System.Threading.Tasks.Task)invokeHelper.Result).Wait ();
-					else if (invokeHelper.ex != null)
-						Rethrow (invokeHelper.ex);
-					return invokeHelper.Result;
+						GuiUnit.TestRunner.MainLoop.InvokeOnMainLoop (invokeHelper);
+						invokeHelper.Waiter.WaitOne ();
+						if (invokeHelper.ex != null)
+							Rethrow (invokeHelper.ex);
+						result = invokeHelper.Result;
+					}
+
+					if (result is System.Threading.Tasks.Task)
+						((System.Threading.Tasks.Task) result).Wait ();
+					else
+						return result;
 				}
 				catch(Exception e)
 				{

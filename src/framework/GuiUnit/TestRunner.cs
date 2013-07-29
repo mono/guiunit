@@ -37,9 +37,14 @@ namespace GuiUnit
 {
 	public class TestRunner : ITestListener
 	{
+		static bool initialized = false;
 		static IMainLoopIntegration mainLoop;
 		public static IMainLoopIntegration MainLoop {
 			get {
+				if (initialized)
+					return mainLoop;
+
+				initialized = true;
 				try { mainLoop = mainLoop ?? new XwtMainLoopIntegration (); } catch { }
 				try { mainLoop = mainLoop ?? new MonoMacMainLoopIntegration (); } catch { }
 				try { mainLoop = mainLoop ?? new GtkMainLoopIntegration (); } catch { }
@@ -193,12 +198,16 @@ namespace GuiUnit
 								filter = new AndFilter(filter, excludeFilter);
 						}
 
-						MainLoop.InitializeToolkit ();
-						System.Threading.ThreadPool.QueueUserWorkItem (d => {
+						if (MainLoop == null) {
 							RunTests (filter);
-							Shutdown ();
-						});
-						MainLoop.RunMainLoop ();
+						} else {
+							MainLoop.InitializeToolkit ();
+							System.Threading.ThreadPool.QueueUserWorkItem (d => {
+								RunTests (filter);
+								Shutdown ();
+							});
+							MainLoop.RunMainLoop ();
+						}
 					}
 				}
 				catch (FileNotFoundException ex)
