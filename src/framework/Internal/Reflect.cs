@@ -214,7 +214,8 @@ namespace NUnit.Framework.Internal
                     Console.WriteLine("Trying to call {0} without an instance", method.Name);
 				try
 				{
-					Environment.CurrentDirectory = System.IO.Path.GetDirectoryName (method.DeclaringType.Assembly.Location);
+					if (LocationProperty != null)
+						Environment.CurrentDirectory = System.IO.Path.GetDirectoryName ((string)LocationProperty.GetValue (method.DeclaringType.Assembly, null));
 
 					object result = null;
 					if (GuiUnit.TestRunner.MainLoop == null) {
@@ -243,6 +244,14 @@ namespace NUnit.Framework.Internal
 			}
 
 		    return null;
+		}
+
+		private static readonly PropertyInfo LocationProperty;
+
+		static Reflect()
+		{
+			Type assemblyType = typeof (Assembly);
+			LocationProperty = assemblyType.GetProperty ("Location");
 		}
 
 		static void Rethrow (Exception e)

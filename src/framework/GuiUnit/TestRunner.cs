@@ -37,8 +37,17 @@ namespace GuiUnit
 {
 	public class TestRunner : ITestListener
 	{
+		internal static MethodInfo LoadFileMethod;
 		static bool initialized = false;
 		static IMainLoopIntegration mainLoop;
+
+		static TestRunner ()
+		{
+			LoadFileMethod = typeof(Assembly).GetMethods ().FirstOrDefault (m => {
+				return m.Name == "LoadFile" && m.GetParameters ().Length == 1 && m.GetParameters () [0].ParameterType == typeof(string);
+			});
+		}
+
 		public static IMainLoopIntegration MainLoop {
 			get {
 				if (initialized)
@@ -156,8 +165,10 @@ namespace GuiUnit
 
 				try
 				{
-					foreach (string name in commandLineOptions.Parameters)
-						assemblies.Add(Assembly.LoadFile(name));
+					if (TestRunner.LoadFileMethod != null) {
+						foreach (string name in commandLineOptions.Parameters)
+							assemblies.Add (TestRunner.LoadFileMethod.Invoke (null, new[] { name }));
+					}
 
 					if (assemblies.Count == 0)
 						assemblies.Add(callingAssembly);
