@@ -20,11 +20,22 @@ namespace GuiUnit
 
 		public void InitializeToolkit ()
 		{
+			Type assemblyType = typeof (Assembly);
+			PropertyInfo locationProperty = assemblyType.GetProperty ("Location");
+			if (locationProperty == null)
+				throw new NotSupportedException();
+
+			MethodInfo loadFileMethod = assemblyType.GetMethod ("LoadFile");
+			if (loadFileMethod == null)
+				throw new NotSupportedException();
+
+			string assemblyDirectory = Path.GetDirectoryName ((string)locationProperty.GetValue (Application.Assembly, null));
+
 			// Firstly init Xwt
 			foreach (var impl in new [] { "Xwt.Gtk.dll", "Xwt.Mac.dll", "Xwt.Wpf.dll"}) {
-				var xwtImpl = Path.Combine (Path.GetDirectoryName (Application.Assembly.Location), impl);
+				var xwtImpl = Path.Combine (assemblyDirectory, impl);
 				if (File.Exists (xwtImpl))
-					Assembly.LoadFile (xwtImpl);
+					loadFileMethod.Invoke (null, new[] { xwtImpl });
 			}
 
 			var initMethods = Application.GetMethods (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);

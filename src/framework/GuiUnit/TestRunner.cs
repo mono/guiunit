@@ -156,8 +156,12 @@ namespace GuiUnit
 
 				try
 				{
-					foreach (string name in commandLineOptions.Parameters)
-						assemblies.Add(Assembly.LoadFile(name));
+					Type assemblyType = typeof (Assembly);
+					MethodInfo loadFileMethod = assemblyType.GetMethod ("LoadFile");
+					if (loadFileMethod != null) {
+						foreach (string name in commandLineOptions.Parameters)
+							assemblies.Add (loadFileMethod.Invoke (null, new[] { name }));
+					}
 
 					if (assemblies.Count == 0)
 						assemblies.Add(callingAssembly);
