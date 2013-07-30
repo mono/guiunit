@@ -1,5 +1,6 @@
 // ***********************************************************************
 // Copyright (c) 2008 Charlie Poole
+// Copyright 2013 Xamarin Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -24,8 +25,8 @@
 using System;
 using System.IO;
 using System.Net.Sockets;
-using System.Text;
 using System.Net;
+using System.Threading;
 
 namespace NUnitLite.Runner
 {
@@ -34,19 +35,20 @@ namespace NUnitLite.Runner
     /// </summary>
     class TcpWriter : TextWriter
     {
-        private string hostName;
-        private int port;
-
-        private TcpClient client;
-        private NetworkStream stream;
-        private StreamWriter writer;
-
         public TcpWriter(IPEndPoint endpoint)
         {
-            this.client = new TcpClient();
-            this.client.Connect (endpoint);
-            this.stream = client.GetStream();
-            this.writer = new StreamWriter(stream);
+            if (endpoint == null)
+                throw new ArgumentNullException ("endpoint");
+
+            this.socket = new Socket (endpoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+
+            var args = new SocketAsyncEventArgs { RemoteEndPoint = endpoint };
+            args.Completed += OnConnectCompleted;
+
+            if (!socket.ConnectAsync (args))
+                OnConnectCompleted (this, args);
+
+            writer = new StreamWriter (stream, Encoding);
         }
 
         public override void Write(char value)
@@ -62,12 +64,65 @@ namespace NUnitLite.Runner
         public override void WriteLine(string value)
         {
             writer.WriteLine(value);
-            writer.Flush();
+            Flush();
         }
 
         public override System.Text.Encoding Encoding
         {
             get { return System.Text.Encoding.UTF8; }
+        }
+
+        private readonly Socket socket;
+
+        private readonly StreamWriter writer;
+        private readonly MemoryStream stream = new MemoryStream();
+
+        private readonly ManualResetEvent connectWait = new ManualResetEvent (false);
+        private readonly AutoResetEvent wait = new AutoResetEvent (false);
+        private SocketAsyncEventArgs args;
+
+        SocketError error = SocketError.Success;
+
+        private void Flush()
+        {
+            connectWait.WaitOne();
+
+            if (error != SocketError.Success)
+                throw new SocketException ((int)error);
+
+            if (args == null) {
+                args = new SocketAsyncEventArgs();
+                args.Completed += OnSocketCompleted;
+            }
+
+            byte[] buffer = this.stream.GetBuffer();
+
+            args.SetBuffer (buffer, 0, (int)this.stream.Position);
+            if (!this.socket.SendAsync (args))
+                OnSocketCompleted (this, args);
+
+            wait.WaitOne();
+            this.stream.Position = 0;
+        }
+
+        private void SetError (SocketAsyncEventArgs e)
+        {
+            if (e.SocketError != SocketError.Success)
+                this.error = e.SocketError;
+            else if (e.BytesTransferred == 0)
+                this.error = SocketError.Disconnecting;
+        }
+
+        private void OnSocketCompleted (object sender, SocketAsyncEventArgs e)
+        {
+            SetError (e);
+            wait.Set();
+        }
+
+        private void OnConnectCompleted (object sender, SocketAsyncEventArgs e)
+        {
+            SetError (e);
+            connectWait.Set();
         }
     }
 }
