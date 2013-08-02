@@ -38,6 +38,7 @@ namespace GuiUnit
 	public class TestRunner : ITestListener
 	{
 		internal static MethodInfo LoadFileMethod;
+		static int ExitCode = 0;
 		static bool initialized = false;
 		static IMainLoopIntegration mainLoop;
 
@@ -66,7 +67,7 @@ namespace GuiUnit
 		public static int Main (string[] args)
 		{
 			new TestRunner ().Execute (args);
-			return 0;
+			return ExitCode;
 		}
 
 		private CommandLineOptions commandLineOptions;
@@ -324,6 +325,7 @@ namespace GuiUnit
 		private void RunTests(ITestFilter filter)
 		{
 			ITestResult result = runner.Run(this, filter);
+			ExitCode = result.FailCount;
 			new ResultReporter(result, writer).ReportResults();
 			if (commandLineOptions.ResultFile != null)
 			{
