@@ -107,20 +107,20 @@ namespace NUnitLite.Runner
             this.stream.Position = 0;
         }
 
-        private void OnSocketCompleted (object sender, SocketAsyncEventArgs e)
+        private void OnConnectCompleted (object sender, SocketAsyncEventArgs e)
         {
             if (e.SocketError != SocketError.Success)
                 this.error = e.SocketError;
-            wait.Set();
+            connectWait.Set();
         }
 
-        private void OnConnectCompleted (object sender, SocketAsyncEventArgs e)
+        private void OnSocketCompleted (object sender, SocketAsyncEventArgs e)
         {
             if (e.SocketError != SocketError.Success)
                 this.error = e.SocketError;
             else if (e.BytesTransferred == 0)
                 this.error = SocketError.Disconnecting;
-            connectWait.Set();
+            wait.Set();
         }
     }
 }
