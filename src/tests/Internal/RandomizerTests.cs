@@ -23,6 +23,7 @@
 
 using System;
 using System.Reflection;
+using NUnit.TestUtilities;
 
 namespace NUnit.Framework.Internal
 {
@@ -163,23 +164,6 @@ namespace NUnit.Framework.Internal
             typeof(RandomizerTests).GetMethod("TestMethod2", BindingFlags.NonPublic | BindingFlags.Instance);
         private void TestMethod2(int x, int y)
         {
-        }
-
-        private int CountUniqueValues(Array array)
-        {
-            int uniqueCount = 0;
-
-            for (int index = 0; index < array.Length; index++)
-            {
-                bool isUnique = true;
-                for (int index2 = 0; index2 < index; index2++)
-                    if (array.GetValue(index).Equals(array.GetValue(index2)))
-                        isUnique = false;
-                if (isUnique)
-                    uniqueCount++;
-            }
-
-            return uniqueCount;
         }
     }
 }

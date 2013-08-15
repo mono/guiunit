@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
+using NUnit.TestUtilities;
 
 namespace NUnitLite.Tests.Internal
 {
@@ -14,78 +16,77 @@ namespace NUnitLite.Tests.Internal
 
         #region Ints
         [Test]
-        public void RandomIntsAreUnique()
+        public static void RandomIntsAreUnique()
         {
             RandomGenerator r = new RandomGenerator(new Random().Next());
             int[] values = new int[10];
             for (int i = 0; i < 10; i++)
                 values[i] = r.GetInt();
 
-            Assert.That(values, Is.Unique);
+            UniqueValues.Check(values, 8); // Heuristic
         }
-        [TestCase(-30000,30000)]
-        public void RandomIntsAreUnique(int min, int max)
+        [TestCase(-300,300)]
+        public static void RandomIntsAreUnique(int min, int max)
         {
            RandomGenerator r = new RandomGenerator(new Random().Next());
             int[] values = new int[10];
             for (int i = 0; i < 10; i++)
                 values[i] = r.GetInt(min,max);
 
-            Assert.That(values, Is.Unique);
+            UniqueValues.Check(values, 8); // Heuristic
         }
         #endregion
 
         #region Shorts
         [Test]
-        public void RandomShortsAreUnique()
+        public static void RandomShortsAreUnique()
         {
             RandomGenerator r = new RandomGenerator(new Random().Next());
             short[] values = new short[10];
             for (int i = 0; i < 10; i++)
                 values[i] = r.GetShort();
 
-            Assert.That(values, Is.Unique);
+            UniqueValues.Check(values, 8); // Heuristic
         }
-        [TestCase(short.MinValue,short.MaxValue)]
-        public void RandomShortsAreUnique(short min, short max)
+        [TestCase(-300, 300)]
+        public static void RandomShortsAreUnique(short min, short max)
         {
             RandomGenerator r = new RandomGenerator(new Random().Next());
             short[] values = new short[10];
             for (int i = 0; i < 10; i++)
                 values[i] = r.GetShort(min, max);
 
-            Assert.That(values, Is.Unique);
+            UniqueValues.Check(values, 8); // Heuristic
         }
         #endregion
 
         #region Btyes
-        [Test][Explicit("Will sometimes fail")]
-        public void RandomBytesAreUnique()
+        [Test]
+        public static void RandomBytesAreUnique()
         {
             RandomGenerator r = new RandomGenerator(new Random().Next());
             byte[] values = new byte[10];
             for (int i = 0; i < 10; i++)
                 values[i] = r.GetByte();
 
-            Assert.That(values, Is.Unique);
+            UniqueValues.Check(values, 8); // Heuristic
         }
 
-        [TestCase(byte.MinValue, byte.MaxValue)]
-        [Explicit("Will sometimes fail")]
-        public void RandomBytesAreUnique(byte min, byte max)
+        [TestCase(12, 212)]
+        public static void RandomBytesAreUnique(byte min, byte max)
         {
             RandomGenerator r = new RandomGenerator(new Random().Next());
             byte[] values = new byte[10];
             for (int i = 0; i < 10; i++)
-                values[i] = r.GetByte();
+                values[i] = r.GetByte(min, max);
 
-            Assert.That(values, Is.Unique);
+            UniqueValues.Check(values, 8); // Heuristic
         }
         #endregion
 
         #region Bool
         [Test]
-        public void CanGetRandomBool()
+        public static void CanGetRandomBool()
         {
             RandomGenerator r = new RandomGenerator(new Random().Next());
             bool[] values = new bool[10];
@@ -95,7 +96,7 @@ namespace NUnitLite.Tests.Internal
             Assert.That(values, Contains.Item(false));
         }
 
-        public void CanGetRandomBoolWithProbability()
+        public static void CanGetRandomBoolWithProbability()
         {
             RandomGenerator r = new RandomGenerator(new Random().Next());
             for (int i = 0; i < 10; i++)
@@ -108,25 +109,25 @@ namespace NUnitLite.Tests.Internal
 
         #region Doubles & Floats
         [Test]
-        public void RandomDoublesAreUnique()
+        public static void RandomDoublesAreUnique()
         {
             RandomGenerator r = new RandomGenerator(new Random().Next());
             double[] values = new double[10];
             for (int i = 0; i < 10; i++)
                 values[i] = r.GetDouble();
 
-            Assert.That(values, Is.Unique);
+            UniqueValues.Check(values, 8); // Heuristic
         }
 
         [Test]
-        public void RandomFloatsAreUnique()
+        public static void RandomFloatsAreUnique()
         {
             RandomGenerator r = new RandomGenerator(new Random().Next());
             double[] values = new double[10];
             for (int i = 0; i < 10; i++)
                 values[i] = r.GetFloat();
 
-            Assert.That(values, Is.Unique);
+            UniqueValues.Check(values, 8); // Heuristic
         }
         #endregion
     }
