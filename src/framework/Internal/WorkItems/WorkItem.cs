@@ -117,7 +117,7 @@ namespace NUnit.Framework.Internal.WorkItems
         {
             _context = new TestExecutionContext(context);
 
-#if (CLR_2_0 || CLR_4_0) && !NETCF && !SILVERLIGHT
+#if (CLR_2_0 || CLR_4_0) && !SILVERLIGHT
             // Timeout set at a higher level
             int timeout = _context.TestCaseTimeout;
 
@@ -134,7 +134,7 @@ namespace NUnit.Framework.Internal.WorkItems
 #endif
         }
 
-#if (CLR_2_0 || CLR_4_0) && !NETCF && !SILVERLIGHT
+#if (CLR_2_0 || CLR_4_0) && !SILVERLIGHT
         private void RunTestWithTimeout(int timeout)
         {
             Thread thread = new Thread(new ThreadStart(RunTest));
@@ -144,12 +144,19 @@ namespace NUnit.Framework.Internal.WorkItems
             if (timeout <= 0)
                 timeout = Timeout.Infinite;
 
+#if NETCF
+            // NETCF doesn't support IsAlive as well as various
+            // members required by our ThreadUtilitity.Kill
+            if (!thread.Join(timeout))
+            {
+                thread.Abort();
+#else
             thread.Join(timeout);
 
             if (thread.IsAlive)
             {
                 ThreadUtility.Kill(thread);
-
+#endif
                 // NOTE: Without the use of Join, there is a race condition here.
                 // The thread sets the result to Cancelled and our code below sets
                 // it to Failure. In order for the result to be shown as a failure,
