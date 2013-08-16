@@ -47,7 +47,7 @@ namespace NUnit
         /// <summary>
         /// Path to the 'My Documents' folder
         /// </summary>
-#if SILVERLIGHT
+#if SILVERLIGHT || PocketPC || WindowsCE || NETCF
         public static string DocumentFolder = @"\My Documents";
 #else
         public static string DocumentFolder = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
