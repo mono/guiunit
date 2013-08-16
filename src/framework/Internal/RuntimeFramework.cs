@@ -261,53 +261,6 @@ namespace NUnit.Framework.Internal
             get { return displayName; }
         }
 
-#if !NUNITLITE
-		private static RuntimeFramework[] availableFrameworks;
-
-        /// <summary>
-        /// Gets an array of all available frameworks
-        /// </summary>
-        // TODO: Special handling for netcf
-        public static RuntimeFramework[] AvailableFrameworks
-        {
-            get
-            {
-                if (availableFrameworks == null)
-                {
-                    FrameworkList frameworks = new FrameworkList();
-
-                    AppendDotNetFrameworks(frameworks);
-                    AppendDefaultMonoFramework(frameworks);
-
-                    // NYI
-                    //AppendMonoFrameworks(frameworks);
-
-                    availableFrameworks = frameworks.ToArray();
-                }
-
-                return availableFrameworks;
-            }
-        }
-
-        /// <summary>
-        /// Returns true if the current RuntimeFramework is available.
-        /// In the current implementation, only Mono and Microsoft .NET
-        /// are supported.
-        /// </summary>
-        /// <returns>True if it's available, false if not</returns>
-        public bool IsAvailable
-        {
-            get
-            {
-                foreach (RuntimeFramework framework in AvailableFrameworks)
-                    if (this.Supports(framework))
-                        return true;
-
-                return false;
-            }
-        }
-#endif
-
         #endregion
 
         #region Public Methods
@@ -348,33 +301,6 @@ namespace NUnit.Framework.Internal
 
             return new RuntimeFramework(runtime, version);
         }
-
-#if !NUNITLITE
-        /// <summary>
-        /// Returns the best available framework that matches a target framework.
-        /// If the target framework has a build number specified, then an exact
-        /// match is needed. Otherwise, the matching framework with the highest
-        /// build number is used.
-        /// </summary>
-        /// <param name="target"></param>
-        /// <returns></returns>
-        public static RuntimeFramework GetBestAvailableFramework(RuntimeFramework target)
-        {
-            RuntimeFramework result = target;
-
-            if (target.ClrVersion.Build < 0)
-            {
-                foreach (RuntimeFramework framework in AvailableFrameworks)
-                    if (framework.Supports(target) && 
-                        framework.ClrVersion.Build > result.ClrVersion.Build)
-                    {
-                        result = framework;
-                    }
-            }
-
-            return result;
-        }
-#endif
 
         /// <summary>
         /// Overridden to return the short name of the framework
@@ -454,118 +380,6 @@ namespace NUnit.Framework.Internal
                   (v1.Build < 0 || v2.Build < 0 || v1.Build == v2.Build) &&
                   (v1.Revision < 0 || v2.Revision < 0 || v1.Revision == v2.Revision);
         }
-
-#if !NUNITLITE
-        private static void AppendMonoFrameworks(FrameworkList frameworks)
-        {
-            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
-                AppendAllMonoFrameworks(frameworks);
-            else
-                AppendDefaultMonoFramework(frameworks);
-        }
-
-        private static void AppendAllMonoFrameworks(FrameworkList frameworks)
-        {
-            // TODO: Find multiple installed Mono versions under Linux
-            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
-            {
-                // Use registry to find alternate versions
-                RegistryKey key = Registry.LocalMachine.OpenSubKey(@"Software\Novell\Mono");
-                if (key == null) return;
-
-                foreach (string version in key.GetSubKeyNames())
-                {
-                    RegistryKey subKey = key.OpenSubKey(version);
-                    string monoPrefix = subKey.GetValue("SdkInstallRoot") as string;
-
-                    AppendMonoFramework(frameworks, monoPrefix, version);
-                }
-            }
-            else
-                AppendDefaultMonoFramework(frameworks);
-        }
-
-        // This method works for Windows and Linux but currently
-        // is only called under Linux.
-        private static void AppendDefaultMonoFramework(FrameworkList frameworks)
-        {
-            string monoPrefix = null;
-            string version = null;
-
-            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
-            {
-                RegistryKey key = Registry.LocalMachine.OpenSubKey(@"Software\Novell\Mono");
-                if (key != null)
-                {
-                    version = key.GetValue("DefaultCLR") as string;
-                    if (version != null && version != "")
-                    {
-                        key = key.OpenSubKey(version);
-                        if (key != null)
-                            monoPrefix = key.GetValue("SdkInstallRoot") as string;
-                    }
-                }
-            }
-            else // Assuming we're currently running Mono - change if more runtimes are added
-            {
-                string libMonoDir = Path.GetDirectoryName(typeof(object).Assembly.Location);
-                monoPrefix = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(libMonoDir)));
-            }
-
-            AppendMonoFramework(frameworks, monoPrefix, version);
-        }
-
-        private static void AppendMonoFramework(FrameworkList frameworks, string monoPrefix, string version)
-        {
-            if (monoPrefix != null)
-            {
-                string displayFmt = version != null
-                    ? "Mono " + version + " - {0} Profile"
-                    : "Mono {0} Profile";
-
-                if (File.Exists(Path.Combine(monoPrefix, "lib/mono/1.0/mscorlib.dll")))
-                {
-                    RuntimeFramework framework = new RuntimeFramework(RuntimeType.Mono, new Version(1, 1, 4322));
-                    framework.displayName = string.Format(displayFmt, "1.0");
-                    frameworks.Add(framework);
-                }
-
-                if (File.Exists(Path.Combine(monoPrefix, "lib/mono/2.0/mscorlib.dll")))
-                {
-                    RuntimeFramework framework = new RuntimeFramework(RuntimeType.Mono, new Version(2, 0, 50727));
-                    framework.displayName = string.Format(displayFmt, "2.0");
-                    frameworks.Add(framework);
-                }
-
-                if (File.Exists(Path.Combine(monoPrefix, "lib/mono/4.0/mscorlib.dll")))
-                {
-                    RuntimeFramework framework = new RuntimeFramework(RuntimeType.Mono, new Version(4, 0, 30319));
-                    framework.displayName = string.Format(displayFmt, "4.0");
-                    frameworks.Add(framework);
-                }
-            }
-        }
-
-        private static void AppendDotNetFrameworks(FrameworkList frameworks)
-        {
-            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
-            {
-                RegistryKey key = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\.NETFramework\policy");
-                if (key != null)
-                {
-                    foreach (string name in key.GetSubKeyNames())
-                    {
-                        if (name.StartsWith("v"))
-                        {
-                            RegistryKey key2 = key.OpenSubKey(name);
-                            foreach (string build in key2.GetValueNames())
-                                frameworks.Add(new RuntimeFramework(RuntimeType.Net, new Version(name.Substring(1) + "." + build)));
-                        }
-                    }
-                }
-            }
-        }
-#endif
 
 #if CLR_2_0 || CLR_4_0
         class FrameworkList : System.Collections.Generic.List<RuntimeFramework> { }

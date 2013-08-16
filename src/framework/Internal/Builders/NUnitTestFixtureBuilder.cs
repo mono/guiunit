@@ -52,12 +52,16 @@ namespace NUnit.Framework.Builders
 		/// </summary>
 		private TestFixture fixture;
 
-#if NUNITLITE
-        private Extensibility.ITestCaseBuilder2 testBuilder = new NUnitTestCaseBuilder();
-#else
-        private Extensibility.ITestCaseBuilder2 testBuilder = CoreExtensions.Host.TestBuilders;
-        private Extensibility.ITestDecorator testDecorators = CoreExtensions.Host.TestDecorators;
-#endif
+        private Extensibility.ITestCaseBuilder2 testBuilder;
+
+		#endregion
+
+        #region Constructor
+
+        public NUnitTestFixtureBuilder()
+        {
+            testBuilder = new NUnitTestCaseBuilder();
+        }
 
 		#endregion
 
@@ -214,18 +218,9 @@ namespace NUnit.Framework.Builders
 		/// <returns>A newly constructed Test</returns>
 		private Test BuildTestCase( MethodInfo method, TestSuite suite )
 		{
-#if NUNITLITE
             return testBuilder.CanBuildFrom(method, suite)
                 ? testBuilder.BuildFrom(method, suite)
                 : null;
-#else
-            Test test = testBuilder.BuildFrom( method, suite );
-
-			if ( test != null )
-				test = testDecorators.Decorate( test, method );
-
-			return test;
-#endif
 		}
 
         private void CheckTestFixtureIsValid(TestFixture fixture)

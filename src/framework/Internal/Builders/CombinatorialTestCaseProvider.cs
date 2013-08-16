@@ -38,12 +38,7 @@ namespace NUnit.Framework.Builders
     public class CombinatorialTestCaseProvider : ITestCaseProvider
     {
         #region Static Members
-        static IParameterDataProvider dataPointProvider =
-#if NUNITLITE
-            new ParameterDataProviders();
-#else
-            (IParameterDataProvider)CoreExtensions.Host.GetExtensionPoint("ParameterDataProviders");
-#endif
+        static IParameterDataProvider dataPointProvider = new ParameterDataProviders();
 
         #endregion
 

@@ -50,18 +50,13 @@ namespace NUnit.Framework.Builders
 	{
         private Randomizer randomizer;
 
-#if NUNITLITE
         private ITestCaseProvider testCaseProvider = new TestCaseProviders();
-#else
-        private ITestCaseProvider testCaseProvider = CoreExtensions.Host.TestCaseProviders;
-#endif
+
         /// <summary>
         /// Default no argument constructor for NUnitTestCaseBuilder
         /// </summary>
         public NUnitTestCaseBuilder()
         {
-            //MethodBase.GetCurrentMethod does not compile on NETCF so this method is used instead
-            //randomizer = Randomizer.GetRandomizer(typeof(NUnitTestCaseBuilder).GetConstructor(new Type[0]));
             randomizer = Randomizer.CreateRandomizer();
         }
 

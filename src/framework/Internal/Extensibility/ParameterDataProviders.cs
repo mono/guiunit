@@ -31,7 +31,6 @@ using NUnit.Framework.Builders;
 
 namespace NUnit.Framework.Extensibility
 {
-#if NUNITLITE
     class ParameterDataProviders : IParameterDataProvider
     {
 #if CLR_2_0 || CLR_4_0
@@ -45,12 +44,6 @@ namespace NUnit.Framework.Extensibility
             Extensions.Add(new ParameterDataProvider());
             Extensions.Add(new DatapointProvider());
         }
-#else
-    class ParameterDataProviders : ExtensionPoint, IParameterDataProvider
-    {
-        public ParameterDataProviders(ExtensionHost host)
-            : base("ParameterDataProviders", host) { }
-#endif
 
         #region IDataPointProvider Members
 
@@ -88,14 +81,5 @@ namespace NUnit.Framework.Extensibility
             return list;
         }
         #endregion
-
-#if !NUNITLITE
-        #region ExtensionPoint Overrides
-        protected override bool IsValidExtension(object extension)
-        {
-            return extension is IParameterDataProvider;
-        }
-        #endregion
-#endif
     }
 }
