@@ -107,6 +107,7 @@
     <Compile Include="Constraints\CollectionSubsetConstraintTests.cs" />
     <Compile Include="Constraints\ComparisonConstraintTest.cs" />
     <Compile Include="Constraints\ConstraintTestBase.cs" />
+    <Compile Include="Constraints\DelayedConstraintTest.cs" />
     <Compile Include="Constraints\EmptyConstraintTest.cs" />
     <Compile Include="Constraints\EndsWithConstraintTests.cs" />
     <Compile Include="Constraints\EqualConstraintTests.cs" />
@@ -166,6 +167,7 @@
     <Compile Include="RecordingTestListener.cs" />
     <Compile Include="Runner\CommandLineOptionTests.cs" />
     <Compile Include="Runner\NUnit2XmlOutputWriterTests.cs" />
+    <Compile Include="Syntax\AfterTests.cs" />
     <Compile Include="Syntax\ArbitraryConstraintMatching.cs" />
     <Compile Include="Syntax\CollectionTests.cs" />
     <Compile Include="Syntax\ComparisonTests.cs" />

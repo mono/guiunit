@@ -50,7 +50,6 @@ namespace NUnit.Framework.Syntax
             return (num & 1) == 0;
         }
 
-#if !NETCF
         [Test]
         public void CanMatchLambda()
         {
@@ -58,7 +57,6 @@ namespace NUnit.Framework.Syntax
             Assert.That(constraint.Resolve().ToString(), Is.EqualTo("<predicate>"));
             Assert.That(42, constraint);
         }
-#endif
 #endif
 
         class CustomConstraint : Constraint

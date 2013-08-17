@@ -21,7 +21,6 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // ***********************************************************************
 
-#if !NETCF
 using System;
 using System.ComponentModel;
 using System.Threading;
@@ -120,6 +119,7 @@ namespace NUnit.Framework.Constraints.Tests
             Assert.That(DelegateReturningZero, new DelayedConstraint(new EqualConstraint(0), -1));
         }
 
+#if !NETCF
         [Test]
         public void CanTestContentsOfList()
         {
@@ -179,6 +179,7 @@ namespace NUnit.Framework.Constraints.Tests
 			Assert.That(() => statusString, Has.Length.GreaterThan(0).After(3000, 100));
 		}
 #endif
+#endif
 
         private static int setValueTrueDelay;
 
@@ -209,4 +210,3 @@ namespace NUnit.Framework.Constraints.Tests
         private ThreadStart SetValueTrueDelegate = new ThreadStart(MethodSetsValueTrue);
     }
 }
-#endif

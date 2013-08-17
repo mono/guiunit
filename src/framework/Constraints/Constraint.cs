@@ -375,7 +375,7 @@ namespace NUnit.Framework.Constraints
 
         #region After Modifier
 
-#if !NETCF && !SILVERLIGHT
+#if !SILVERLIGHT
         /// <summary>
         /// Returns a DelayedConstraint with the specified delay time.
         /// </summary>
