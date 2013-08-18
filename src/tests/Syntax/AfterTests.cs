@@ -85,6 +85,9 @@ namespace NUnit.Framework.Syntax
         }
     }
 
+#if !NETCF_2_0
+    // This compiles under VS2008 but not using NAnt
+    // TODO: Make Nant script use the highest level of msbuild available
     public class AfterSyntaxUsingAnonymousDelegates : AfterSyntaxTests
     {
         [Test]
@@ -135,6 +138,7 @@ namespace NUnit.Framework.Syntax
 			Assert.That(delegate { throw new Exception(); }, Throws.TypeOf<Exception>().After(100));
 		}
     }
+#endif
 
     public class AfterSyntaxUsingActualPassedByRef : AfterSyntaxTests
     {
