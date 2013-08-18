@@ -1,4 +1,4 @@
-NUnitLite Version 1.0 Beta - July 28, 2013
+NUnitLite Version 1.0 Beta 2 - August 17, 2013
 
 NUnitLite is a small-footprint implementation of much of the current NUnit framework. It is distributed in source form and is intended for use in situations where NUnit is too large or complex. In particular, it targets mobile and embedded environments as well as testing of applications that require "embedding" the framework in another piece of software, as when testing plugin architectures.
 
@@ -6,15 +6,15 @@ This file provides basic information about NUnitLite. For more info see the NUni
 
 COPYRIGHT AND LICENSE
 
-NUnitLite is Copyright © 2013, Charlie Poole and is licensed under the MIT license.
+NUnitLite is Copyright 2004-2013, Charlie Poole and is licensed under the MIT license.
 
 A copy of the license is distributed with the program in the file LICENSE.txt and is also available at http://www.opensource.org/licenses/mit-license.php.
 
-NUNitLite is based on ideas in NUnit, but not on the NUnit implementation. In addition, some code developed in NUnitLite was subsequently contributed to the NUnit project, where it is available under the NUnit license. Subsequently, some (but not all) of the newer NUnit features were ported back to NUnitLite.
+NUnitLite is based on ideas in NUnit, but not on the NUnit implementation. In addition, some code developed in NUnitLite was subsequently contributed to the NUnit project, where it is available under the NUnit license. Subsequently, some (but not all) of the newer NUnit features were ported back to NUnitLite.
 
 ATTRIBUTES
 
-NUnitLite supports most of the same attributes as NUnit 2.6.
+NUnitLite supports most of the same attributes as NUnit 2.6.2.
 	CategoryAttribute
 	CombinatorialAttribute
 	CultureAttribute
@@ -31,8 +31,8 @@ NUnitLite supports most of the same attributes as NUnit 2.6.
 	RandomAttribute
 	RangeAttribute
 	SequentialAttribute
-	SetCultureAttribute
-	SetUICultureAttribute
+	SetCultureAttribute (not available on compact framework)
+	SetUICultureAttribute (not available on compact framework)
 	SetUpAttribute
 	TearDownAttribute
 	TestAttribute
@@ -129,18 +129,18 @@ NUnitLite supports most of the same built-in constraints as NUnit. Users may als
 
 Although constraints may be created using their constructors, the more usual approach is to make use of one or more of the NUnitLite SyntaxHelpers. The following helpers are provided: 
 
-  Is: Not, All, Null, True, False, NaN, Empty, Unique, EqualTo, SameAs,
-      GreaterThan, GreaterThanOrEqualTo, LessThan, LessThanOrEqualTo,
-      AtLeast, AtMost, TypeOf, InstanceOf, InstanceOfType, AssignableFrom,
-      AssignableTo, StringContaining, StringStarting, StringEnding, 
-      StringMatching, EquivalentTo, SubsetOf, BinarySerializable, XmlSerializable, 
+  Is: Not, All, Null, True, False, Positive, Negative, NaN, Empty, Unique, 
+      EqualTo, SameAs, GreaterThan, GreaterThanOrEqualTo, LessThan, LessThanOrEqualTo,
+      AtLeast, AtMost, TypeOf, InstanceOf, AssignableFrom, AssignableTo, 
+      StringContaining, StringStarting, StringEnding, StringMatching, 
+      EquivalentTo, SubsetOf, BinarySerializable, XmlSerializable, 
       Ordered, SamePath, SamePathOrUnder, InRange
 
   Contains: Substring, Item
 
-  Has: No, All, Some, None,Property, Length, Count, Message, Member, Attribute
+  Has: No, All, Some, None,Exactly, Property, Length, Count, Message, InnerException, Member, Attribute
 
-Tests are loaded as a list of fixtures, without any additional hierarchy. Each fixture contains it's tests. Tests are executed in the order found, without any guarantees of ordering. A separate instance of the fixture object is created for each test case executed by NUnitLite. The embedded console runner produces a summary of tests run and lists any errors or failures.
+Tests are loaded as a tree structure of suites, fixtures and test cases. Each fixture contains it's tests. Tests are executed in the order found, without any guarantees of ordering. A separate instance of the fixture object is created for each test case executed by NUnitLite. The embedded console runner produces a summary of tests run and lists any errors or failures. It can also save an XML representation of the test results.
 
 USAGE
 

@@ -1,4 +1,25 @@
-NUnitLite Version 1.0 Beta - July 28, 2013
+NUnitLite Version 1.0 Beta 2 - August 17, 2013
+
+Attributes
+
+* The TimeoutAttribute is now avaialable under the Compact Famework.
+
+Constraints
+
+* The DelayedConstraint and its associated 'After' syntax are now
+available under the Compact Framework.
+
+Bug Fixes
+
+* 1071343	Runner.Load fails on compact framework if the test assembly contains a generic method
+* 1203361	Randomizer uniqueness tests sometimes fail
+* 1212890	The /seed option value is not being used to generate tests
+* 1213174	Implement TimeoutAttribute for the compact framework builds
+* 1213176	Compact framework and Silverlight builds should use the document folder
+* 1213180	Split Compact frameowork 2.0 and 3.5 builds into separate solutions
+* 1213451	Implement DelayedConstraint for the compact framework builds
+
+NUnitLite Version 1.0 Beta 1 - July 28, 2013
 
 Runner
 
