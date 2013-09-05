@@ -7,6 +7,13 @@ namespace GuiUnit
 {
 	public class XwtMainLoopIntegration : IMainLoopIntegration
 	{
+		// List of Xwt backends we will try to use in order of priority
+		Tuple<string,string>[] backends = new[] {
+			Tuple.Create ("Xwt.Gtk.dll", "Xwt.GtkBackend.GtkEngine, Xwt.Gtk"),
+			Tuple.Create ("Xwt.WPF.dll", "Xwt.WPFBackend.WPFEngine, Xwt.WPF"),
+			Tuple.Create ("Xwt.Mac.dll", "Xwt.Mac.MacEngine, Xwt.Mac")
+		};
+
 		Type Application {
 			get; set;
 		}
@@ -31,15 +38,21 @@ namespace GuiUnit
 			string assemblyDirectory = Path.GetDirectoryName ((string)locationProperty.GetValue (Application.Assembly, null));
 
 			// Firstly init Xwt
-			foreach (var impl in new [] { "Xwt.Gtk.dll", "Xwt.Mac.dll", "Xwt.Wpf.dll"}) {
-				var xwtImpl = Path.Combine (assemblyDirectory, impl);
-				if (File.Exists (xwtImpl))
-					TestRunner.LoadFileMethod.Invoke (null, new[] { xwtImpl });
-			}
-
+			var initialized = false;
 			var initMethods = Application.GetMethods (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
-			var initMethod = initMethods.First (m => m.Name == "Initialize" && m.GetParameters ().Length == 1 && m.GetParameters () [0].ParameterType == typeof(string));
-			initMethod.Invoke (null, new [] { "Xwt.GtkBackend.GtkEngine, Xwt.Gtk" });
+			var initMethod = initMethods.First (m => m.Name == "Initialize" && m.GetParameters ().Length == 1 && m.GetParameters ()[0].ParameterType == typeof (string));
+
+			foreach (var impl in backends) {
+				var xwtImpl = Path.Combine (assemblyDirectory, impl.Item1);
+				if (File.Exists (xwtImpl)) {
+					TestRunner.LoadFileMethod.Invoke (null, new[] { xwtImpl });
+					initMethod.Invoke (null, new object[] { impl.Item2 });
+					initialized = true;
+					break;
+				}
+			}
+			if (!initialized)
+				initMethod.Invoke (null, new object[] { null });
 		}
 
 		public void InvokeOnMainLoop (InvokerHelper helper)
