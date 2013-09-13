@@ -52,7 +52,7 @@ Use   nant -projecthelp to see a full list of targets.
   <property name="package.version" value="1.0.0"/>
 
   <!-- Additional suffix used to distinguish files with the same version -->
-  <property name="package.suffix" value="-beta2"/>
+  <property name="package.suffix" value=""/>
 
   <!-- Frameworks supported by this build script -->
   <property name="supported.frameworks"

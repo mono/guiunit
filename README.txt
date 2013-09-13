@@ -1,4 +1,4 @@
-NUnitLite Version 1.0 Beta 2 - August 17, 2013
+NUnitLite Version 1.0 - September 13, 2013
 
 NUnitLite is a small-footprint implementation of much of the current NUnit framework. It is distributed in source form and is intended for use in situations where NUnit is too large or complex. In particular, it targets mobile and embedded environments as well as testing of applications that require "embedding" the framework in another piece of software, as when testing plugin architectures.
 
