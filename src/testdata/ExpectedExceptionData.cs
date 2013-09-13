@@ -277,6 +277,7 @@ namespace NUnit.TestData.ExpectedExceptionData
         }
     }
 
+#if CLR_2_0 || CLR_4_0
     public static class StaticClassWithExpectedExceptions
     {
         [Test, ExpectedException(typeof(ArgumentException))]
@@ -296,4 +297,5 @@ namespace NUnit.TestData.ExpectedExceptionData
             throw new InvalidOperationException("wrong exception");
         }
     }
+#endif
 }

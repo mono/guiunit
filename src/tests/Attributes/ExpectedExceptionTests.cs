@@ -444,25 +444,27 @@ namespace NUnit.Framework.Attributes
 				test.Properties.Get(PropertyNames.SkipReason) );
 		}
 
+#if CLR_2_0 || CLR_4_0
         [Test]
         public void TestSucceedsInStaticClass()
         {
-            var result = TestBuilder.RunTestCase(typeof(StaticClassWithExpectedExceptions), "TestSucceedsInStaticClass");
+            ITestResult result = TestBuilder.RunTestCase(typeof(StaticClassWithExpectedExceptions), "TestSucceedsInStaticClass");
             Assert.That(result.ResultState, Is.EqualTo(ResultState.Success));
         }
 
         [Test]
         public void TestFailsInStaticClass_NoExceptionThrown()
         {
-            var result = TestBuilder.RunTestCase(typeof(StaticClassWithExpectedExceptions), "TestFailsInStaticClass_NoExceptionThrown");
+            ITestResult result = TestBuilder.RunTestCase(typeof(StaticClassWithExpectedExceptions), "TestFailsInStaticClass_NoExceptionThrown");
             Assert.That(result.ResultState, Is.EqualTo(ResultState.Failure));
         }
 
         [Test]
         public void TestFailsInStaticClass_WrongExceptionThrown()
         {
-            var result = TestBuilder.RunTestCase(typeof(StaticClassWithExpectedExceptions), "TestFailsInStaticClass_WrongExceptionThrown");
+            ITestResult result = TestBuilder.RunTestCase(typeof(StaticClassWithExpectedExceptions), "TestFailsInStaticClass_WrongExceptionThrown");
             Assert.That(result.ResultState, Is.EqualTo(ResultState.Failure));
         }
-	}
+#endif
+    }
 }
