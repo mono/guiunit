@@ -34,6 +34,10 @@ namespace GuiUnit
 			                            new XAttribute ("ignored", result.SkipCount),
 			                            new XAttribute ("inconclusive", result.InconclusiveCount)
 			);
+			if (!string.IsNullOrEmpty (result.Message))
+				element.Add (new XAttribute ("message", result.Message));
+			if (!string.IsNullOrEmpty (result.StackTrace))
+				element.Add (new XAttribute ("stack-trace", result.StackTrace));
 			Write (element);
 		}
 
