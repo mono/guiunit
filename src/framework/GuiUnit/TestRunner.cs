@@ -118,19 +118,29 @@ namespace GuiUnit
 		/// <param name="args">An array of arguments</param>
 		public void Execute(string[] args)
 		{
-			// NOTE: Execute must be directly called from the
-			// test assembly in order for the mechanism to work.
-			Assembly callingAssembly = Assembly.GetCallingAssembly();
-
 			this.commandLineOptions = new CommandLineOptions();
 			commandLineOptions.Parse(args);
 
 			if (commandLineOptions.OutFile != null)
 				this.writer = new StreamWriter(commandLineOptions.OutFile);
-
+			
+			
+			TcpWriter tcpWriter = null;
 			if (listener == TestListener.NULL && commandLineOptions.Port != -1) {
-				listener = new XmlTestListener (new TcpWriter (new IPEndPoint (IPAddress.Loopback, commandLineOptions.Port)));
+				tcpWriter = new TcpWriter (new IPEndPoint (IPAddress.Loopback, commandLineOptions.Port));
+				listener = new XmlTestListener (tcpWriter);
 			}
+
+			// Ensure we always dispose the socket correctly.
+			using (tcpWriter)
+				ExecuteWithListener (args, tcpWriter);
+		}
+
+		void ExecuteWithListener (string[] args, TcpWriter tcpWriter)
+		{
+			// NOTE: Execute must be directly called from the
+			// test assembly in order for the mechanism to work.
+			Assembly callingAssembly = Assembly.GetCallingAssembly();
 
 			if (!commandLineOptions.NoHeader)
 				WriteHeader(this.writer);

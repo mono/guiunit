@@ -51,6 +51,15 @@ namespace NUnitLite.Runner
             writer = new StreamWriter (stream, Encoding);
         }
 
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing) {
+				using (socket)
+					socket.Shutdown(SocketShutdown.Both);
+			}
+			base.Dispose(disposing);
+		}
+
         public override void Write(char value)
         {
             writer.Write(value);
