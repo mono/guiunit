@@ -83,15 +83,9 @@ namespace NUnit.Framework.Internal.Filters
 		/// <returns>True if it matches, otherwise false</returns>
 		public override bool Match( ITest test )
 		{
-			if (names.Contains (test.FullName))
-				return true;
-
-			while (test != null) {
-				if (names.Contains (test.FullName) && test.HasChildren)
+			foreach (var name in names)
+				if (name == test.FullName || test.FullName.StartsWith(name))
 					return true;
-				test = test.Parent;
-			}
-
 			return false;
 		}
 	}
