@@ -76,6 +76,11 @@ namespace NUnit.Framework.Internal
             this.Name = method.Name;
             this.FullName += "." + this.Name;
 
+            // Disambiguate call to base class methods
+            // TODO: This should not be here - it's a presentation issue
+            if( method.DeclaringType != method.ReflectedType)
+                this.Name = method.DeclaringType.Name + "." + method.Name;
+
             // Needed to give proper fullname to test in a parameterized fixture.
             // Without this, the arguments to the fixture are not included.
             string prefix = method.ReflectedType.FullName;
