@@ -179,7 +179,7 @@ namespace GuiUnit
 				{
 					if (TestRunner.LoadFileMethod != null) {
 						foreach (string name in commandLineOptions.Parameters)
-							assemblies.Add (TestRunner.LoadFileMethod.Invoke (null, new[] { name }));
+							assemblies.Add (TestRunner.LoadFileMethod.Invoke (null, new[] { Path.GetFullPath (name) }));
 					}
 
 					if (assemblies.Count == 0)
