@@ -291,7 +291,7 @@ namespace NUnitLite.Runner
                     break;
                 case "xml":
                 case "result":
-                    resultFile = val;
+                    resultFile = ExpandToFullPath (val);
                     break;
                 case "format":
                     resultFormat = val;
