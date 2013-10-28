@@ -58,7 +58,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>nunit.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>guiunit.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -368,7 +368,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="nunit.snk" />
+    <None Include="guiunit.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
