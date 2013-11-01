@@ -135,7 +135,7 @@ namespace NUnit.Framework.Internal
                 long l = (long)arg;
                 if (l == long.MinValue)
                     display = "long.MinValue";
-                else if (l == long.MinValue)
+                else if (l == long.MaxValue)
                     display = "long.MaxValue";
                 else
                     display += "L";
@@ -145,7 +145,7 @@ namespace NUnit.Framework.Internal
                 ulong ul = (ulong)arg;
                 if (ul == ulong.MinValue)
                     display = "ulong.MinValue";
-                else if (ul == ulong.MinValue)
+                else if (ul == ulong.MaxValue)
                     display = "ulong.MaxValue";
                 else
                     display += "UL";
