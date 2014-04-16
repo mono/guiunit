@@ -239,13 +239,8 @@ namespace NUnit.Framework.Internal
         /// <summary>
         /// The current context, head of the list of saved contexts.
         /// </summary>
-#if SILVERLIGHT || NETCF
-#if (CLR_2_0 || CLR_4_0) && !NETCF
-        [ThreadStatic]
-#endif
-        private static TestExecutionContext current;
-#endif
 
+        private static TestExecutionContext current;
         /// <summary>
         /// Gets the current context.
         /// </summary>
@@ -254,14 +249,10 @@ namespace NUnit.Framework.Internal
         {
             get 
             {
-#if SILVERLIGHT || NETCF
                 if (current == null)
                     current = new TestExecutionContext();
 
                 return current; 
-#else
-                return CallContext.GetData("NUnit.Framework.TestContext") as TestExecutionContext;
-#endif
             }
         }
 
@@ -271,11 +262,7 @@ namespace NUnit.Framework.Internal
 
         internal static void SetCurrentContext(TestExecutionContext ec)
         {
-#if SILVERLIGHT || NETCF
             current = ec;
-#else
-            CallContext.SetData("NUnit.Framework.TestContext", ec);
-#endif
         }
 
         #endregion
