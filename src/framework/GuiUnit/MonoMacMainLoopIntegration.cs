@@ -17,6 +17,8 @@ namespace GuiUnit
 		{
 			Application = Type.GetType ("MonoMac.AppKit.NSApplication, MonoMac");
 			if (Application == null)
+				Application = Type.GetType ("AppKit.NSApplication, Xamarin.Mac");
+			if (Application == null)
 				throw new NotSupportedException ();
 		}
 
