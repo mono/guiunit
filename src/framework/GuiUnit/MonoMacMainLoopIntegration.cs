@@ -15,9 +15,10 @@ namespace GuiUnit
 
 		public MonoMacMainLoopIntegration ()
 		{
-			Application = Type.GetType ("MonoMac.AppKit.NSApplication, MonoMac");
-			if (Application == null)
-				Application = Type.GetType ("AppKit.NSApplication, Xamarin.Mac");
+			Application =
+				Type.GetType ("AppKit.NSApplication, Xamarin.Mac") ??
+				Type.GetType ("MonoMac.AppKit.NSApplication, XamMac") ??
+				Type.GetType ("MonoMac.AppKit.NSApplication, MonoMac");
 			if (Application == null)
 				throw new NotSupportedException ();
 		}
