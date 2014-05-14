@@ -22,6 +22,9 @@
 // ***********************************************************************
 
 using System;
+using System.Text;
+
+
 #if CLR_2_0 || CLR_4_0
 using System.Collections.Generic;
 #endif
@@ -87,6 +90,18 @@ namespace NUnit.Framework.Internal.Filters
 				if (name == test.FullName)
 					return true;
 			return false;
+		}
+
+		/// <summary>
+		/// Returns a <see cref="System.String"/> that represents the current <see cref="NUnit.Framework.Internal.Filters.SimpleNameFilter"/>.
+		/// </summary>
+		/// <returns>A <see cref="System.String"/> that represents the current <see cref="NUnit.Framework.Internal.Filters.SimpleNameFilter"/>.</returns>
+		public override string ToString ()
+		{
+			StringBuilder s = new StringBuilder("[SimpleNameFilter]: ");
+			foreach (var name in names)
+				s.Append (name + " ");
+			return s.ToString ();
 		}
 	}
 }

@@ -88,6 +88,11 @@ namespace NUnit.Framework.Internal.WorkItems
                     RunChildren();
                     return;
                 }
+                else
+                {
+                    Console.WriteLine("No tests found that match filter: " + _childFilter.ToString() + "\n");
+                    Result.SetResult(ResultState.Inconclusive);
+                }
             }
 
             // Fall through in case there were no child tests to run.
