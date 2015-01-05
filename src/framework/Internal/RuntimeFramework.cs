@@ -198,6 +198,7 @@ namespace NUnit.Framework.Internal
                                     minor = 0;
                                 }
                             }
+                            key.Close();
                         }
                     }
 
