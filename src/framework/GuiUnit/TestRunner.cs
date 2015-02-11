@@ -41,6 +41,7 @@ namespace GuiUnit
 		static int ExitCode = 0;
 		static bool initialized = false;
 		static IMainLoopIntegration mainLoop;
+		public static event EventHandler BeforeShutdown;
 
 		static TestRunner ()
 		{
@@ -264,6 +265,8 @@ namespace GuiUnit
 			// Run the shutdown method on the main thread
 			var helper = new InvokerHelper {
 				Func = () => {
+					if (BeforeShutdown != null)
+						BeforeShutdown (null, EventArgs.Empty);
 					MainLoop.Shutdown ();
 					return null;
 				}
