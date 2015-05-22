@@ -481,7 +481,9 @@ namespace NUnit.Framework.Internal
 
 		private void StartTracing()
 		{
+#if !XAMMAC
 			System.Diagnostics.Trace.Listeners.Add( new TextWriterTraceListener( traceWriter, "NUnit" ) );
+#endif
 		}
 #endif
 

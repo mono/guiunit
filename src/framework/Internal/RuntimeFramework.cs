@@ -181,6 +181,7 @@ namespace NUnit.Framework.Internal
 					else /* It's windows */
 					if (major == 2)
                     {
+#if !XAMMAC
                         RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\.NETFramework");
                         if (key != null)
                         {
@@ -199,6 +200,7 @@ namespace NUnit.Framework.Internal
                                 }
                             }
                         }
+#endif
                     }
 
                     currentFramework = new RuntimeFramework(runtime, new Version(major, minor));
