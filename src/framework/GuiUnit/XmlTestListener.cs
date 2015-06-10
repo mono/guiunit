@@ -2,11 +2,14 @@ using System;
 using NUnit.Framework.Api;
 using System.Xml.Linq;
 using System.IO;
+using System.Text;
 
 namespace GuiUnit
 {
 	public class XmlTestListener : ITestListener
 	{
+		StringBuilder output = new StringBuilder ();
+
 		TextWriter Writer {
 			get; set;
 		}
@@ -18,6 +21,7 @@ namespace GuiUnit
 
 		public void TestStarted (ITest test)
 		{
+			output.Clear ();
 			if (test.HasChildren)
 				Write (new XElement ("suite-started", new XAttribute ("name", test.FullName)));
 			else
@@ -38,12 +42,14 @@ namespace GuiUnit
 				element.Add (new XAttribute ("message", result.Message));
 			if (!string.IsNullOrEmpty (result.StackTrace))
 				element.Add (new XAttribute ("stack-trace", result.StackTrace));
+			if (output.Length > 0)
+				element.Add (new XAttribute ("output", output.ToString ()));
 			Write (element);
 		}
 
 		public void TestOutput (TestOutput testOutput)
 		{
-			// Ignore
+			output.Append (testOutput);
 		}
 
 		object ToXmlString (ResultState resultState)
