@@ -185,14 +185,10 @@ namespace GuiUnit
 
 					if (assemblies.Count == 0)
 						assemblies.Add(callingAssembly);
-
-					// TODO: For now, ignore all but first assembly
-					Assembly assembly = assemblies[0] as Assembly;
-
-					if (!runner.Load(assembly, loadOptions))
-					{
-						AssemblyName assemblyName = AssemblyHelper.GetAssemblyName(assembly);
-						Console.WriteLine("No tests found in assembly {0}", assemblyName.Name);
+					
+					if (assemblies.OfType<Assembly> ().All (asm => !runner.Load (asm, loadOptions))) {
+						var names = assemblies.OfType<Assembly> ().Select (asm => AssemblyHelper.GetAssemblyName (asm).Name);
+						Console.WriteLine("No tests found in assemblies:{0}{1}", Environment.NewLine, string.Join (Environment.NewLine, names));
 						return;
 					}
 
