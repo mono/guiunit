@@ -93,8 +93,15 @@ namespace NUnit.Framework.Internal
         public bool Load(Assembly assembly, IDictionary settings)
         {
             this.settings = settings;
-            this.loadedTest = this.builder.Build(assembly, settings);
-            if (loadedTest == null) return false;
+			TestSuite suite = this.builder.Build (assembly, settings);
+			if (suite == null)
+				return false;
+			
+			if (loadedTest == null) {
+				this.loadedTest = suite;
+			} else {
+				this.loadedTest.Add (suite);
+			}
 
             return true;
         }
