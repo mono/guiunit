@@ -38,7 +38,7 @@ namespace GuiUnit
 	public class TestRunner : ITestListener
 	{
 		internal static MethodInfo LoadFileMethod;
-		static int ExitCode = 0;
+		public static int ExitCode = 0;
 		static bool initialized = false;
 		static IMainLoopIntegration mainLoop;
 		public static event EventHandler BeforeShutdown;
