@@ -56,7 +56,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\bin\xammac_mobile</OutputPath>
-    <DefineConstants>TRACE;NET_4_5, CLR_4_0,NUNITLITE</DefineConstants>
+    <DefineConstants>TRACE;NET_4_5, CLR_4_0,NUNITLITE;XAMMAC</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
