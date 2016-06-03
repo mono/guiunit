@@ -139,10 +139,6 @@ namespace GuiUnit
 
 		void ExecuteWithListener (string[] args, TcpWriter tcpWriter)
 		{
-			// NOTE: Execute must be directly called from the
-			// test assembly in order for the mechanism to work.
-			Assembly callingAssembly = Assembly.GetCallingAssembly();
-
 			if (!commandLineOptions.NoHeader)
 				WriteHeader(this.writer);
 
@@ -184,7 +180,7 @@ namespace GuiUnit
 					}
 
 					if (assemblies.Count == 0)
-						assemblies.Add(callingAssembly);
+						assemblies.Add (Assembly.GetEntryAssembly ());
 
 					// TODO: For now, ignore all but first assembly
 					Assembly assembly = assemblies[0] as Assembly;
