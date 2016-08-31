@@ -223,8 +223,13 @@ namespace GuiUnit
 						} else {
 							MainLoop.InitializeToolkit ();
 							System.Threading.ThreadPool.QueueUserWorkItem (d => {
-								RunTests (filter);
-								Shutdown ();
+								try {
+									RunTests (filter);
+								} catch (Exception ex) {
+									Console.WriteLine ("Unexpected error while running the tests: {0}", ex);
+								} finally {
+									Shutdown ();
+								}
 							});
 							MainLoop.RunMainLoop ();
 						}
@@ -261,9 +266,14 @@ namespace GuiUnit
 			// Run the shutdown method on the main thread
 			var helper = new InvokerHelper {
 				Func = () => {
-					if (BeforeShutdown != null)
-						BeforeShutdown (null, EventArgs.Empty);
-					MainLoop.Shutdown ();
+					try {
+						if (BeforeShutdown != null)
+							BeforeShutdown (null, EventArgs.Empty);
+					} catch (Exception ex) {
+						Console.WriteLine ("Unexpected error during `BeforeShutdown`: {0}", ex);
+					} finally {
+						MainLoop.Shutdown ();
+					}
 					return null;
 				}
 			};
