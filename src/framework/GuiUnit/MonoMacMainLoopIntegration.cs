@@ -1,5 +1,7 @@
 using System;
+using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace GuiUnit
 {
@@ -25,6 +27,14 @@ namespace GuiUnit
 
 		public void InitializeToolkit ()
 		{
+			// First, dlopen libxammac.dylib from the same dir we loaded the Xamarin.Mac dll
+			var dylibPath = Path.Combine (Path.GetDirectoryName (Application.Assembly.Location), "libxammac.dylib");
+			if (dlopen (dylibPath, 0) == IntPtr.Zero) {
+				var errPtr = dlerror ();
+				var errStr = (errPtr == IntPtr.Zero)? "<unknown error>" : Marshal.PtrToStringAnsi (errPtr);
+				Console.WriteLine ("WARNING: Cannot load {0}: {1}", dylibPath, errStr);
+			}
+
 			var initMethod = Application.GetMethod ("Init", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
 			initMethod.Invoke (null, null);
 
@@ -49,6 +59,12 @@ namespace GuiUnit
 		{
 			Application.GetMethod ("Terminate").Invoke (SharedApplication, new [] { SharedApplication });
 		}
+
+		[DllImport ("/usr/lib/libSystem.dylib")]
+		static extern IntPtr dlopen (string path, int mode);
+
+		[DllImport ("/usr/lib/libSystem.dylib")]
+		static extern IntPtr dlerror ();
 	}
 }
 
