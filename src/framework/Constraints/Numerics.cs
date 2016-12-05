@@ -30,9 +30,9 @@ namespace NUnit.Framework.Constraints
     /// </summary>
     public class Numerics
     {
-		static Type nintType;
-		static Type nuintType;
-		static Type nfloatType;
+        static Type nintType;
+        static Type nuintType;
+        static Type nfloatType;
 
         #region Numeric Type Recognition
         /// <summary>
@@ -58,7 +58,7 @@ namespace NUnit.Framework.Constraints
             {
                 if (obj is System.Double) return true;
                 if (obj is System.Single) return true;
-				if (obj.GetType () == Type.GetType ("System.nfloat, Xamarin.Mac")) return true;
+                if (obj.GetType () == Type.GetType ("System.nfloat, Xamarin.Mac")) return true;
             }
             return false;
         }
@@ -81,8 +81,8 @@ namespace NUnit.Framework.Constraints
                 if (obj is System.UInt64) return true;
                 if (obj is System.Int16) return true;
                 if (obj is System.UInt16) return true;
-				if (obj.GetType () == Type.GetType ("System.nint, Xamarin.Mac")) return true;
-				if (obj.GetType () == Type.GetType ("System.nuint, Xamarin.Mac")) return true;
+                if (obj.GetType () == Type.GetType ("System.nint, Xamarin.Mac")) return true;
+                if (obj.GetType () == Type.GetType ("System.nuint, Xamarin.Mac")) return true;
             }
             return false;
         }
@@ -100,49 +100,49 @@ namespace NUnit.Framework.Constraints
         /// <returns>True if the values are equal</returns>
         public static bool AreEqual(object expected, object actual, ref Tolerance tolerance)
         {
-			bool _double = (expected is double || actual is double);
+             _double = (expected is double || actual is double);
             if (!_double && (IntPtr.Size == 8))
-				_double = (expected.GetType () == nfloatType || actual.GetType () == nfloatType);
+                _double = (expected.GetType () == nfloatType || actual.GetType () == nfloatType);
 
-			if (_double)
-				return AreEqual (Convert.ToDouble (expected), Convert.ToDouble (actual), ref tolerance);
+            if (_double)
+                return AreEqual (Convert.ToDouble (expected), Convert.ToDouble (actual), ref tolerance);
 
-			bool _float = (expected is float || actual is float);
+            bool _float = (expected is float || actual is float);
             if (!_float && (IntPtr.Size == 4))
-				_float = (expected.GetType () == nfloatType || actual.GetType () == nfloatType);
+                _float = (expected.GetType () == nfloatType || actual.GetType () == nfloatType);
 
-			if (_float)
-				return AreEqual (Convert.ToSingle (expected), Convert.ToSingle (actual), ref tolerance);
+            if (_float)
+                return AreEqual (Convert.ToSingle (expected), Convert.ToSingle (actual), ref tolerance);
 
-			if (tolerance.Mode == ToleranceMode.Ulps)
-				throw new InvalidOperationException ("Ulps may only be specified for floating point arguments");
+            if (tolerance.Mode == ToleranceMode.Ulps)
+                throw new InvalidOperationException ("Ulps may only be specified for floating point arguments");
 
-			if (expected is decimal || actual is decimal)
-				return AreEqual (Convert.ToDecimal (expected), Convert.ToDecimal (actual), tolerance);
+            if (expected is decimal || actual is decimal)
+                return AreEqual (Convert.ToDecimal (expected), Convert.ToDecimal (actual), tolerance);
 
-			bool _ulong = (expected is ulong || actual is ulong);
+            bool _ulong = (expected is ulong || actual is ulong);
             if (!_ulong && (IntPtr.Size == 8))
-				_ulong = (expected.GetType () == nuintType || actual.GetType ()== nuintType);
+                _ulong = (expected.GetType () == nuintType || actual.GetType ()== nuintType);
 
-			if (_ulong)
-				return AreEqual (Convert.ToUInt64 (expected), Convert.ToUInt64 (actual), tolerance);
+            if (_ulong)
+                return AreEqual (Convert.ToUInt64 (expected), Convert.ToUInt64 (actual), tolerance);
 
-			bool _long = (expected is long || actual is long);
+            bool _long = (expected is long || actual is long);
             if (!_long && (IntPtr.Size == 8))
-				_long = (expected.GetType () == nintType || actual.GetType () == nintType);
+                _long = (expected.GetType () == nintType || actual.GetType () == nintType);
 
-			if (_long)
-				return AreEqual (Convert.ToInt64 (expected), Convert.ToInt64 (actual), tolerance);
+            if (_long)
+                return AreEqual (Convert.ToInt64 (expected), Convert.ToInt64 (actual), tolerance);
 
-			bool _uint = (expected is uint || actual is uint);
+            bool _uint = (expected is uint || actual is uint);
             if (!_uint && (IntPtr.Size == 4))
-				_uint = (expected.GetType () == nuintType || actual.GetType () == nuintType);
+                _uint = (expected.GetType () == nuintType || actual.GetType () == nuintType);
 
-			if (_uint)
-				return AreEqual (Convert.ToUInt32 (expected), Convert.ToUInt32 (actual), tolerance);
+            if (_uint)
+                return AreEqual (Convert.ToUInt32 (expected), Convert.ToUInt32 (actual), tolerance);
 
-			// int or nint on 32bits archs
-			return AreEqual (Convert.ToInt32 (expected), Convert.ToInt32 (actual), tolerance);
+            // int or nint on 32bits archs
+            return AreEqual (Convert.ToInt32 (expected), Convert.ToInt32 (actual), tolerance);
         }
 
         private static bool AreEqual(double expected, double actual, ref Tolerance tolerance)
@@ -379,45 +379,45 @@ namespace NUnit.Framework.Constraints
         /// <returns>The relationship of the values to each other</returns>
         public static int Compare(object expected, object actual)
         {
-			if (!IsNumericType (expected) || !IsNumericType (actual))
-				throw new ArgumentException ("Both arguments must be numeric");
+            if (!IsNumericType (expected) || !IsNumericType (actual))
+                throw new ArgumentException ("Both arguments must be numeric");
 
-			if (IsFloatingPointNumeric (expected) || IsFloatingPointNumeric (actual))
-				return Convert.ToDouble (expected).CompareTo (Convert.ToDouble (actual));
+            if (IsFloatingPointNumeric (expected) || IsFloatingPointNumeric (actual))
+                return Convert.ToDouble (expected).CompareTo (Convert.ToDouble (actual));
 
-			if (expected is decimal || actual is decimal)
-				return Convert.ToDecimal (expected).CompareTo (Convert.ToDecimal (actual));
+            if (expected is decimal || actual is decimal)
+                return Convert.ToDecimal (expected).CompareTo (Convert.ToDecimal (actual));
 
-			bool _ulong = (expected is ulong || actual is ulong);
+            bool _ulong = (expected is ulong || actual is ulong);
             if (!_ulong && (IntPtr.Size == 8))
-				_ulong = (expected.GetType () == nuintType || actual.GetType () == nuintType);
+                _ulong = (expected.GetType () == nuintType || actual.GetType () == nuintType);
 
-			if (_ulong)
-				return Convert.ToUInt64 (expected).CompareTo (Convert.ToUInt64 (actual));
+            if (_ulong)
+                return Convert.ToUInt64 (expected).CompareTo (Convert.ToUInt64 (actual));
 
-			bool _long = (expected is long || actual is long);
+            bool _long = (expected is long || actual is long);
             if (!_long && (IntPtr.Size == 8))
-				_long = (expected.GetType () == nintType || actual.GetType () == nintType);
+                _long = (expected.GetType () == nintType || actual.GetType () == nintType);
 
-			if (_long)
-				return Convert.ToInt64 (expected).CompareTo (Convert.ToInt64 (actual));
+            if (_long)
+                return Convert.ToInt64 (expected).CompareTo (Convert.ToInt64 (actual));
 
-			bool _uint = (expected is uint || actual is uint);
+            bool _uint = (expected is uint || actual is uint);
             if (!_uint && (IntPtr.Size == 4))
-				_uint = (expected.GetType () == nuintType || actual.GetType () == nuintType);
+                _uint = (expected.GetType () == nuintType || actual.GetType () == nuintType);
 
-			if (_uint)
-				return Convert.ToUInt32 (expected).CompareTo (Convert.ToUInt32 (actual));
+            if (_uint)
+                return Convert.ToUInt32 (expected).CompareTo (Convert.ToUInt32 (actual));
 
-			return Convert.ToInt32 (expected).CompareTo (Convert.ToInt32 (actual));
+            return Convert.ToInt32 (expected).CompareTo (Convert.ToInt32 (actual));
         }
         #endregion
 
         static Numerics()
         {
-			nintType = Type.GetType ("System.nint, Xamarin.Mac");
-			nuintType = Type.GetType ("System.nuint, Xamarin.Mac");
-			nfloatType = Type.GetType ("System.nfloat, Xamarin.Mac");
+            nintType = Type.GetType ("System.nint, Xamarin.Mac");
+            nuintType = Type.GetType ("System.nuint, Xamarin.Mac");
+            nfloatType = Type.GetType ("System.nfloat, Xamarin.Mac");
         }
     }
 }
