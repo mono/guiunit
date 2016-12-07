@@ -100,7 +100,7 @@ namespace NUnit.Framework.Constraints
         /// <returns>True if the values are equal</returns>
         public static bool AreEqual(object expected, object actual, ref Tolerance tolerance)
         {
-             _double = (expected is double || actual is double);
+            _double = (expected is double || actual is double);
             if (!_double && (IntPtr.Size == 8))
                 _double = (expected.GetType () == nfloatType || actual.GetType () == nfloatType);
 
