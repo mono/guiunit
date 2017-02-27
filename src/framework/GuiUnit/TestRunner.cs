@@ -69,7 +69,6 @@ namespace GuiUnit
 		public static int Main (string[] args)
 		{
 			new TestRunner ().Execute (args);
-			Environment.Exit (ExitCode);
 			return ExitCode;
 		}
 
@@ -346,7 +345,7 @@ namespace GuiUnit
 		private void RunTests(ITestFilter filter)
 		{
 			ITestResult result = runner.Run(this, filter);
-			ExitCode = Math.Min (result.FailCount, 255);
+			ExitCode = result.FailCount;
 			new ResultReporter(result, writer).ReportResults();
 			if (commandLineOptions.ResultFile != null)
 			{
