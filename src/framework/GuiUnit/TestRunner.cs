@@ -26,6 +26,7 @@ using System.IO;
 using System.Linq;
 using System.Collections;
 using System.Reflection;
+using NUnit.Framework;
 using NUnit.Framework.Api;
 using NUnit.Framework.Internal;
 using NUnit.Framework.Internal.Filters;
@@ -223,11 +224,15 @@ namespace GuiUnit
 						}
 
 						if (MainLoop == null) {
+							ExecuteGlobalSetupCode (assembly);
 							RunTests (filter);
+							ExecuteGlobalTearDownCode (assembly);
 						} else {
 							MainLoop.InitializeToolkit ();
 							System.Threading.ThreadPool.QueueUserWorkItem (d => {
+								ExecuteGlobalSetupCode (assembly);
 								RunTests (filter);
+								ExecuteGlobalTearDownCode (assembly);
 								Shutdown ();
 							});
 							MainLoop.RunMainLoop ();
@@ -256,6 +261,50 @@ namespace GuiUnit
 					{
 						writer.Close();
 					}
+				}
+			}
+		}
+
+		bool IsValidSetUpMethod (MethodInfo method)
+		{
+			// See CheckSetUpTearDownMethods in NUnitTestFixtureBuilder
+			if (method.IsAbstract || !method.IsPublic && !method.IsFamily ||
+				method.GetParameters ().Length > 0 || !method.ReturnType.Equals (typeof (void)))
+			{
+#if NET_4_5
+				if (MethodHelper.IsAsyncMethod (method))
+					return true;
+#endif
+				return false;
+			}
+
+			return true;
+		}
+
+		void ExecuteGlobalSetupCode (Assembly assembly)
+		{
+			var classesWithAttribute = assembly.GetExportedTypes ()
+				.Where (t => t.GetCustomAttribute<SetUpFixtureAttribute> () != null);
+			foreach (var globalSetupClass in classesWithAttribute) {
+				var setupMethods = Reflect.GetMethodsWithAttribute (globalSetupClass, typeof (SetUpAttribute), false);
+				var classInstance = Activator.CreateInstance (globalSetupClass);
+				foreach (var method in setupMethods) {
+					if (IsValidSetUpMethod (method))
+						Reflect.InvokeMethod (method, method.IsStatic ? null : classInstance);
+				}
+			}
+		}
+
+		void ExecuteGlobalTearDownCode (Assembly assembly)
+		{
+			var classesWithAttribute = assembly.GetExportedTypes ()
+				.Where (t => t.GetCustomAttribute<SetUpFixtureAttribute> () != null);
+			foreach (var globalSetupClass in classesWithAttribute) {
+				var teardownMethods = Reflect.GetMethodsWithAttribute (globalSetupClass, typeof (TearDownAttribute), false);
+				var classInstance = Activator.CreateInstance (globalSetupClass);
+				foreach (var method in teardownMethods) {
+					if (IsValidSetUpMethod (method))
+						Reflect.InvokeMethod (method, method.IsStatic ? null : classInstance);
 				}
 			}
 		}
