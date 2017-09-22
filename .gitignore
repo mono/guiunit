@@ -4,3 +4,4 @@ src/framework/GuiUnit.userprefs
 src/framework/obj/*
 *.userprefs
 src/TestResultConsole/obj/*
+*.csproj.CoreCompileInputs.cache
