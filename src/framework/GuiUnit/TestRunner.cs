@@ -345,7 +345,7 @@ namespace GuiUnit
 		private void RunTests(ITestFilter filter)
 		{
 			ITestResult result = runner.Run(this, filter);
-			ExitCode = result.FailCount;
+			ExitCode = result.FailCount > 0 ? 1 : 0;
 			new ResultReporter(result, writer).ReportResults();
 			if (commandLineOptions.ResultFile != null)
 			{
