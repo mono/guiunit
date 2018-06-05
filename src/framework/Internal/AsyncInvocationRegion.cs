@@ -78,16 +78,8 @@ at wrapping a non-async method invocation in an async region was done");
 
             public override object WaitForPendingOperationsToComplete(object invocationResult)
             {
-                try
-                {
-                    _currentContext.WaitForPendingOperationsToComplete();
-                    return invocationResult;
-                }
-                catch (Exception e)
-                {
-                    //PreserveStackTrace(e);
-                    throw;
-                }
+                _currentContext.WaitForPendingOperationsToComplete();
+                return invocationResult;
             }
         }
 

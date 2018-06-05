@@ -38,7 +38,7 @@ namespace NUnit.Framework.Internal
         /// <summary>
         /// Gets the path from which the assembly defining a Type was loaded.
         /// </summary>
-        /// <param name="assembly">The Type.</param>
+        /// <param name="type">The Type.</param>
         /// <returns>The path.</returns>
         public static string GetAssemblyPath(Type type)
         {
@@ -102,7 +102,7 @@ namespace NUnit.Framework.Internal
 #if !NETCF
         private static bool IsFileUri(string uri)
         {
-            return uri.ToLower().StartsWith(Uri.UriSchemeFile);
+            return uri.StartsWith(Uri.UriSchemeFile, StringComparison.OrdinalIgnoreCase);
         }
 
         // Public for testing purposes
