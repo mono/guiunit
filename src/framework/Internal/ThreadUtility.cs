@@ -61,7 +61,9 @@ namespace NUnit.Framework.Internal
                 // Although obsolete, this use of Resume() takes care of
                 // the odd case where a ThreadStateException is received
                 // so we continue to use it.
+                #pragma warning disable CS0618 // obsolete
                 thread.Resume();
+                #pragma warning restore CS0618
             }
 
             if ( (thread.ThreadState & ThreadState.WaitSleepJoin) != 0 )
