@@ -242,6 +242,7 @@ namespace GuiUnit
 				catch (Exception ex)
 				{
 					writer.WriteLine(ex.ToString());
+					ExitCode = 1;
 				}
 				finally
 				{
