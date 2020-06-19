@@ -394,7 +394,7 @@ namespace GuiUnit
 		public void TestStarted(ITest test)
 		{
 			if (commandLineOptions.LabelTestsInOutput)
-				writer.WriteLine("***** {0}", test.Name);
+				writer.WriteLine("***** {0}", test.FullName);
 			listener.TestStarted (test);
 		}
 
