@@ -65,11 +65,11 @@ namespace NUnitLite.Runner
         {
             PrintSummaryReport();
 
-            if (summary.FailureCount > 0 || summary.ErrorCount > 0)
-                PrintErrorReport();
-
             if (summary.NotRunCount > 0)
                 PrintNotRunReport();
+
+            if (summary.FailureCount > 0 || summary.ErrorCount > 0)
+                PrintErrorReport();
 
             //if (commandLineOptions.Full)
             //    PrintFullReport(result);
