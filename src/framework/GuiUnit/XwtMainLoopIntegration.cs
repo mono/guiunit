@@ -11,7 +11,7 @@ namespace GuiUnit
 		Tuple<string,string>[] backends = new[] {
 			Tuple.Create ("Xwt.Gtk.dll", "Xwt.GtkBackend.GtkEngine, Xwt.Gtk"),
 			Tuple.Create ("Xwt.WPF.dll", "Xwt.WPFBackend.WPFEngine, Xwt.WPF"),
-			Tuple.Create ("Xwt.Mac.dll", "Xwt.Mac.MacEngine, Xwt.Mac")
+			Tuple.Create ("Xwt.XamMac.dll", "Xwt.Mac.MacEngine, Xwt.XamMac")
 		};
 
 		Type Application {
