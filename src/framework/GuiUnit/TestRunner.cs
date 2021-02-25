@@ -46,7 +46,7 @@ namespace GuiUnit
 		static TestRunner ()
 		{
 			LoadFileMethod = typeof(Assembly).GetMethods ().FirstOrDefault (m => {
-				return m.Name == "LoadFile" && m.GetParameters ().Length == 1 && m.GetParameters () [0].ParameterType == typeof(string);
+				return m.Name == "LoadFrom" && m.GetParameters ().Length == 1 && m.GetParameters () [0].ParameterType == typeof(string);
 			});
 		}
 
