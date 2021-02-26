@@ -238,6 +238,7 @@ namespace GuiUnit
 				catch (FileNotFoundException ex)
 				{
 					writer.WriteLine(ex.Message);
+					ExitCode = 1;
 				}
 				catch (Exception ex)
 				{
@@ -272,6 +273,7 @@ namespace GuiUnit
 							BeforeShutdown (null, EventArgs.Empty);
 					} catch (Exception ex) {
 						Console.WriteLine ("Unexpected error during `BeforeShutdown`: {0}", ex);
+						ExitCode = 1;
 					} finally {
 						MainLoop.Shutdown ();
 					}

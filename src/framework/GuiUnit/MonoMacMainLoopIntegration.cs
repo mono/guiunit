@@ -33,6 +33,7 @@ namespace GuiUnit
 				var errPtr = dlerror ();
 				var errStr = (errPtr == IntPtr.Zero)? "<unknown error>" : Marshal.PtrToStringAnsi (errPtr);
 				Console.WriteLine ("WARNING: Cannot load {0}: {1}", dylibPath, errStr);
+				throw new InvalidOperationException("Unable to initialize Xamarin.Mac");
 			}
 
 			var initMethod = Application.GetMethod ("Init", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
