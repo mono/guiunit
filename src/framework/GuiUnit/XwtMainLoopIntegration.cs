@@ -9,7 +9,6 @@ namespace GuiUnit
 	{
 		// List of Xwt backends we will try to use in order of priority
 		Tuple<string,string>[] backends = new[] {
-			Tuple.Create ("Xwt.Gtk.dll", "Xwt.GtkBackend.GtkEngine, Xwt.Gtk"),
 			Tuple.Create ("Xwt.WPF.dll", "Xwt.WPFBackend.WPFEngine, Xwt.WPF"),
 			Tuple.Create ("Xwt.XamMac.dll", "Xwt.Mac.MacEngine, Xwt.XamMac")
 		};
