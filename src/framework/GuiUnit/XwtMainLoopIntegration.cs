@@ -67,9 +67,13 @@ namespace GuiUnit
 			Application.GetMethod ("Run").Invoke (null, null);
 		}
 
-		public void Shutdown ()
+		public void Shutdown (int exitCode)
 		{
-			Application.GetMethod ("Exit").Invoke (null, null);
+			var method = Application.GetMethod("Exit", new Type[] { typeof(int) });
+			if (method != null)
+				method.Invoke(null, new object[] { exitCode });
+			else
+				Application.GetMethod("Exit").Invoke(null, null);
 		}
 	}
 }

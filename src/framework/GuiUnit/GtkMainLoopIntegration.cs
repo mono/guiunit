@@ -60,7 +60,7 @@ namespace GuiUnit
 			Application.GetMethod ("Run").Invoke (null, null);
 		}
 
-		public void Shutdown ()
+		public void Shutdown (int exitCode)
 		{
 			Application.GetMethod ("Quit").Invoke (null, null);
 		}

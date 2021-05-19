@@ -56,7 +56,7 @@ namespace GuiUnit
 			Application.GetMethod ("Run").Invoke (SharedApplication, null);
 		}
 
-		public void Shutdown ()
+		public void Shutdown (int exitCode)
 		{
 			Application.GetMethod ("Terminate").Invoke (SharedApplication, new [] { SharedApplication });
 		}
