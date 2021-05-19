@@ -82,6 +82,8 @@ namespace GuiUnit
 
 		private ITestAssemblyRunner runner;
 
+		private bool finished;
+
 		#region Constructors
 
 		/// <summary>
@@ -228,7 +230,8 @@ namespace GuiUnit
 								} catch (Exception ex) {
 									Console.WriteLine ("Unexpected error while running the tests: {0}", ex);
 								} finally {
-									Shutdown ();
+									FinishTestExecution();
+									Shutdown();
 								}
 							});
 							MainLoop.RunMainLoop ();
@@ -246,24 +249,34 @@ namespace GuiUnit
 					ExitCode = 1;
 				}
 				finally
-				{
-					if (commandLineOptions.OutFile == null)
-					{
-						if (commandLineOptions.Wait)
-						{
-							Console.WriteLine("Press Enter key to continue . . .");
-							Console.ReadLine();
-						}
-					}
-					else
-					{
-						writer.Close();
-					}
-				}
-			}
+                {
+                    FinishTestExecution();
+                }
+            }
 		}
 
-		static void Shutdown ()
+        private void FinishTestExecution()
+        {
+			if (finished)
+				return;
+
+			finished = true;
+
+			if (commandLineOptions.OutFile == null)
+            {
+                if (commandLineOptions.Wait)
+                {
+                    Console.WriteLine("Press Enter key to continue . . .");
+                    Console.ReadLine();
+                }
+            }
+            else
+            {
+                writer.Close();
+            }
+        }
+
+        static void Shutdown ()
 		{
 			// Run the shutdown method on the main thread
 			var helper = new InvokerHelper {
@@ -275,7 +288,7 @@ namespace GuiUnit
 						Console.WriteLine ("Unexpected error during `BeforeShutdown`: {0}", ex);
 						ExitCode = 1;
 					} finally {
-						MainLoop.Shutdown ();
+						MainLoop.Shutdown (ExitCode);
 					}
 					return null;
 				}
