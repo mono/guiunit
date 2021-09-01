@@ -150,7 +150,7 @@ namespace GuiUnit
 			} while (!endLoop);
 		}
 
-		public void Shutdown ()
+		public void Shutdown (int exitCode)
 		{
 			lock (work)
 			{
